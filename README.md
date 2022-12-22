@@ -36,7 +36,7 @@
 
 
 ## Introduction
-This is a side project I've been working on. A full stack expense spliting app - splitwise clone made using the MERN stack (MongoDB, Express, React & Nodejs), specially designed to split group expense between friends. With this application, you can add your expense details and get an whole expense analytics feature - Group Balance, Monthly amount spend, Catagory wise expense spending graph etc... Jump right off the [Live App](https://split-app00.herokuapp.com/) and start adding your expenses or download the entire [Source code](https://github.com/cskwrd/atm-machine/) and run it on your server. This project is something I've been working on in my free time so I cannot be sure that everything will work out correctly. But I'll appreciate you if can report any issue.
+Self-hosted expense splitting application for splitting expenses with friends... or enemies!
 
 ![Features](https://raw.githubusercontent.com/cskwrd/atm-machine/master/Screenshots/combined-screenshot.png)
 
@@ -69,7 +69,7 @@ This project was created using the following technologies.
 - bcryptjs (for data encryption)
 
 #### Database
-MongoDB (MongoDB Atlas)
+MongoDB
 
 ## Configuration and Setup
 In order to run this project locally, simply fork and clone the repository or download as zip and unzip on your machine. 
@@ -84,30 +84,29 @@ $ npm install (to install client-side dependencies)
 $ npm start (to start the client)
 ```
 
-For setting up backend
-- cd create a .env file in the root of your directory.
-- Supply the following credentials
+In the second terminal (*in the project root directory (back-end))
 
+```
+$ cd server
+$ npm install (to install server-side dependencies)
+```
+
+- Create a file named `.env`, in the `server` directory.
+- Supply the following credentials
 ```
 PORT=3001
-MONGODB_URI=
-ACCESS_TOKEN_SECRET=
-
+MONGODB_URI=<address to mongo db>
+ACCESS_TOKEN_SECRET=<secret key, see below>
 ```
 
-Please follow [This tutorial](https://dev.to/dalalrohit/how-to-connect-to-mongodb-atlas-using-node-js-k9i) to create your mongoDB connection url, which you'll use as your MONGODB_URI
-
-Provide some random key in ACCESS_TOKEN_SECRET or you could generate one using node enter the below command in the terminal to genrate a random secret key 
-
+You can generate a secret key using node. Enter the below command in the terminal to genrate a random secret key:
 ```
 node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
 ```
 
-In the second terminal (*in the project root directory (back-end))
-
+Save the `.env` file and run:
 ```
-$ npm install (to install server-side dependencies)
-& npm start (to start the server)
+$ npm start
 ```
 
 ## Comment
