@@ -13,10 +13,10 @@ const About = () => {
         }}>
 <div align="center">
   <a href="/">
-    <img src="https://github.com/tuzup/SplitApp/blob/master/client/public/static/logo.png?raw=true" alt="Logo" width="80" height="80"/>
+    <img src="https://github.com/cskwrd/atm-machine/blob/master/client/public/static/logo.png?raw=true" alt="Logo" width="80" height="80"/>
   </a>
 
-  <h2 align="center">SplitApp</h2>
+  <h2 align="center">ATM Machine</h2>
 
   <p align="center">
     Build with the MERN stack (MongoDB, Express, React and NodeJS).
@@ -24,13 +24,13 @@ const About = () => {
     <br/>
     <Copyright/>
     <br/>
-    <a href="https://github.com/tuzup/SplitApp/issues">Report Bug</a>
+    <a href="https://github.com/cskwrd/atm-machine/issues">Report Bug</a>
     &nbsp;&nbsp;&nbsp;
-    <a href="https://github.com/tuzup/SplitApp/issues">Request Feature</a>
+    <a href="https://github.com/cskwrd/atm-machine/issues">Request Feature</a>
   </p>
 </div>
 <br/>
-<center><img src="https://raw.githubusercontent.com/tuzup/SplitApp/master/Screenshots/dashboard-main-transparent.png" alt="splitapp" width={'80%'}/></center>
+<center><img src="https://raw.githubusercontent.com/cskwrd/atm-machine/master/Screenshots/dashboard-main-transparent.png" alt="ATM Machine" width={'80%'}/></center>
 <Typography variant="h5">
 MERN Stack Group Expense Splitting Application
 </Typography>
@@ -51,9 +51,9 @@ MERN Stack Group Expense Splitting Application
 <br/>
 <h2 id="introduction">Introduction</h2>
 <br/>
-<p>This is a side project I&#39;ve been working on. A full stack expense spliting app - splitwise clone made using the MERN stack (MongoDB, Express, React &amp; Nodejs), specially designed to split group expense between friends, but can be used for almost any type of business need. With this application, you can add your expense details and get an whole expense analytics feature - Group Balance, Monthly amount spend, Catagory wise expense spending graph etc... Jump right off the <a href="https://split-app00.herokuapp.com/">Live App</a> and start adding your expenses or download the entire <a href="https://github.com/tuzup/SplitApp/">Source code</a> and run it on your server. This project is something I&#39;ve been working on in my free time so I cannot be sure that everything will work out correctly. But I&#39;ll appreciate you if can report any issue.</p>
+<p>This is a side project I&#39;ve been working on. A full stack expense spliting app - splitwise clone made using the MERN stack (MongoDB, Express, React &amp; Nodejs), specially designed to split group expense between friends, but can be used for almost any type of business need. With this application, you can add your expense details and get an whole expense analytics feature - Group Balance, Monthly amount spend, Catagory wise expense spending graph etc... Jump right off the <a href="https://split-app00.herokuapp.com/">Live App</a> and start adding your expenses or download the entire <a href="https://github.com/cskwrd/atm-machine/">Source code</a> and run it on your server. This project is something I&#39;ve been working on in my free time so I cannot be sure that everything will work out correctly. But I&#39;ll appreciate you if can report any issue.</p>
 <br/>
-<center><img src="https://raw.githubusercontent.com/tuzup/SplitApp/master/Screenshots/combined-screenshot.png" alt="Features" width={'80%'}/></center>
+<center><img src="https://raw.githubusercontent.com/cskwrd/atm-machine/master/Screenshots/combined-screenshot.png" alt="Features" width={'80%'}/></center>
 <br/>
 <h2 id="key-features">Key Features</h2>
 <br/>
@@ -148,15 +148,11 @@ to keep improving the project.</p>
 <br/>
 <h2 id="license">License</h2>
 <br/>
-<p>This project is MIT licensed.</p>
+<p>Licensed under the terms of the <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">GNU Affero General Public License</a> as published by
+the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+See <a href="https://github.com/cskwrd/atm-machine/blob/master/LICENSE">LICENSE</a> for more details.</p>
 <br/>
-<p>Copyright 2022 Sunny G Vaikathuparampan</p>
-<br/>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-<br/>
-<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-<br/>
-<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+<p>Copyright 2022 ATM Machine</p>
 <br/>
 <Copyright/>
 <br/>

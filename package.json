@@ -1,5 +1,5 @@
 {
-  "name": "splitapp",
+  "name": "atm-machine",
   "version": "1.0.0",
   "description": "This is a group money spliting app made with MERN stack ",
   "main": "app.js",
@@ -12,8 +12,8 @@
   "keywords": [
     "SplitWise"
   ],
-  "author": "Sunny George",
-  "license": "ISC",
+  "author": "ATM Machine",
+  "license": "AGPL-3.0-or-later",
   "dependencies": {
     "@mui/x-data-grid": "^5.12.3",
     "bcryptjs": "^2.4.3",
