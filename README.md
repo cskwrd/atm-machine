@@ -71,7 +71,16 @@ This project was created using the following technologies.
 #### Database
 MongoDB
 
-## Configuration and Setup
+## Self-hosted Setup
+To host this application yourself, the only supported option at this time is via `docker compose`.
+
+1. Clone this repo your docker host.
+1. In a terminal window, navigate to the cloned repo.
+1. Create `.env` file, by running: `echo "ATM_MACHINE_TOKEN_SECRET=$(head --bytes=256 /dev/urandom | base64 --wrap=0)" > .env`
+1. Run: `docker compose -f docker-compose.yml up -d`
+1. If successful, app will be available at: `http://<your-docker-host>:8090`
+
+## Dev Setup
 In order to run this project locally, simply fork and clone the repository or download as zip and unzip on your machine. 
 - Open the project in your prefered code editor.
 - Go to terminal -> New terminal (If you are using VS code)

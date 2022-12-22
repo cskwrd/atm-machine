@@ -1,0 +1,40 @@
+version: '3.8'
+
+networks:
+  atm-machine-net:
+    driver: bridge
+
+services:
+  atm-machine-db:
+    image: mongo:latest
+    networks:
+      - atm-machine-net
+    volumes:
+      - atm-machine-db:/data/db
+
+  atm-machine-be:
+    build:
+      context: ./server/
+      dockerfile: Dockerfile
+    depends_on:
+      - atm-machine-db
+    environment:
+      PORT: 3001
+      MONGODB_URI: mongodb://atm-machine-db:27017
+      ACCESS_TOKEN_SECRET: ${ATM_MACHINE_TOKEN_SECRET:?Secret token required}
+    networks:
+      - atm-machine-net
+
+  atm-machine-fe:
+    build:
+      context: ./client/
+      dockerfile: Dockerfile
+    depends_on:
+      - atm-machine-db
+    networks:
+      - atm-machine-net
+    ports:
+      - "8090:80"
+
+volumes:
+  atm-machine-db:
