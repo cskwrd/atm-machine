@@ -1,8 +1,15 @@
 {
-    "short_name": "ATM",
-    "name": "ATM Machine",
-    "start_url": ".",
-    "display": "standalone",
-    "theme_color": "#000000",
-    "background_color": "#ffffff"
-  }
+  "short_name": "ATM",
+  "name": "ATM Machine",
+  "icons": [
+    {
+      "src": "static/logo.png",
+      "sizes": "32x32 16x16",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
