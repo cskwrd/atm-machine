@@ -13,6 +13,18 @@ const accessHeader = {
     }
   }
 
+export interface IUserDetails {
+  emailId: string,
+  firstName: string,
+  lastName: string,
+}
+
+interface IUserDetailsResponseType {
+  data: {
+    user: IUserDetails
+  }
+}
+
 export const loginIn = (formData: any) => API.post('/api/users/v1/login', formData)
 
 export const register = (formData: any) => API.post('/api/users/v1/register', formData)
@@ -21,7 +33,7 @@ export const deleteUser = (formData: any) => API.delete('/api/users/v1/delete', 
 
 export const updatePassword = (formData: any) =>API.post('/api/users/v1/updatePassword', formData, accessHeader)
 
-export const getUser = (formData: any) => API.post('/api/users/v1/view', formData, accessHeader)
+export const getUser = (formData: any) => API.post<any, IUserDetailsResponseType, number>('/api/users/v1/view', formData, accessHeader)
 
 export const editUser = (formData: any) => API.post('/api/users/v1/edit', formData, accessHeader)
 

@@ -11,9 +11,10 @@ import Loading from '../loading'
 import EditForm from './editUser'
 import AlertBanner from '../AlertBanner'
 import configData from '../../config.json'
+import { IUserDetails } from '../../api'
 
 
-const profile = JSON.parse(localStorage.getItem('profile'))
+const profile = JSON.parse(localStorage.getItem('profile') ?? "{}")
 
 const modelStyle = {
   position: 'absolute',
@@ -66,13 +67,15 @@ export default function Profile() {
   }
   
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState<IUserDetails>();
   
   useEffect(() =>{
     const getUserDetails = async () => {
       setLoading(true)
       const response = await getUser(profile, setShowAlert, setAlertMessage)
-      setUser(response.data.user)
+      if (response !== false) {
+        setUser(response.data.user)
+      }
       setLoading(false)
     }
     getUserDetails()
@@ -86,26 +89,31 @@ return (
   </Typography>
 
   <Grid container spacing={3} p={4}>
-    <Grid item xs={12} md={4} align="center">
-      {user.emailId && 
-      <Avatar src={gravatarUrl(user.emailId, {size: 350, default: configData.USER_DEFAULT_LOGO_URL})} alt="photoURL" sx={{ width: 240, height: 240 }} />}
-      <Typography variant="body2" align="center" sx={{ mt: 3, color: 'text.secondary' }}>
-        *The profile picture is taken from Gravitar{' '} <br />
-        <Link variant="subtitle3" component={'a'} href="https://en.gravatar.com/support/faq/" target="_blank">
+    {/* TODO :: this element didn't convert correctly */}
+    {/* <Grid
+    item
+    xs={12}
+    md={4}
+    align="center">
+      {user?.emailId && (<Avatar src={gravatarUrl(user.emailId, {size: 350, default: configData.USER_DEFAULT_LOGO_URL})} alt="photoURL" sx={{ width: 240, height: 240 }} />)}
+      {user?.emailId && (<Typography variant="body2" align="center" sx={{ mt: 3, color: 'text.secondary' }}>
+        *The profile picture is taken from Gravitar{' '} <br /> */}
+        {/* TODO :: this was subtitle3 variant, but that doesn't exist i guess */}
+        {/* <Link variant="subtitle2" component={'a'} href="https://en.gravatar.com/support/faq/" target="_blank">
         Know how to set gravitar profile pic!
         </Link>
-      </Typography>
-    </Grid>
+      </Typography>)}
+    </Grid> */}
     <Grid item xs={12} md={6} sx={{mt: 4}}>
     {changePass && (
-      <ChangePassword hidePassUpdate={hidePassUpdate} emailId = {user.emailId}
+      <ChangePassword hidePassUpdate={hidePassUpdate} emailId = {user?.emailId ?? ""}
         showHomeAlert={setShowAlert} homeAlertMessage={setAlertMessage} 
         />
         
     )}
 
     {editUser && 
-      <EditForm hideEditUser={hideEditUser} emailId = {user.emailId} firstName = {user.firstName} lastName = {user.lastName} 
+      <EditForm hideEditUser={hideEditUser} emailId = {user?.emailId ?? ""} firstName = {user?.firstName ?? ""} lastName = {user?.lastName ?? ""} 
 showHomeAlert={setShowAlert} homeAlertMessage={setAlertMessage} 
       />
     }
@@ -115,12 +123,12 @@ showHomeAlert={setShowAlert} homeAlertMessage={setAlertMessage}
     <AlertBanner showAlert={showAlert} alertMessage={alertMessage} severity='success' autoHideDuration={5000}
             onCloseHandle={handleAlertClose}/>
 
-    <UserDetails firstName={user.firstName} lastName={user.lastName} emailId={user.emailId}/>
+    <UserDetails emailId = {user?.emailId ?? ""} firstName = {user?.firstName ?? ""} lastName = {user?.lastName ?? ""}/>
       <Grid container spacing={3} mt={1} justifyContent={'center'}>
         <Grid item xs={11} md={3}
          order={{xs:3, md:1}}
         >
-          <Button startIcon={<Iconify icon='fluent:delete-dismiss-24-filled'/>} variant="outlined" color="error" sx={{width:"100%"}} 
+          <Button startIcon={<Iconify icon='fluent:delete-dismiss-24-filled' sx={undefined}/>} variant="outlined" color="error" sx={{width:"100%"}} 
           onClick={deleteConfirmOpen}
           >
             Delete
@@ -139,12 +147,12 @@ showHomeAlert={setShowAlert} homeAlertMessage={setAlertMessage}
             Are you sure you want to delte the user account?
           </Typography>
           <Stack mt={2} spacing={2} direction={'row'}>
-          <Button startIcon={<Iconify icon='fluent:delete-dismiss-24-filled'/>} variant="outlined" color="error" sx={{ width:'100%'}}
+          <Button startIcon={<Iconify icon='fluent:delete-dismiss-24-filled' sx={undefined}/>} variant="outlined" color="error" sx={{ width:'100%'}}
           onClick={apiDeleteCall}
           >
             Delete Account
           </Button>
-          <Button startIcon={<Iconify icon='material-symbols:cancel'/>} variant="outlined" color="primary" sx={{ width:'100%'}}
+          <Button startIcon={<Iconify icon='material-symbols:cancel' sx={undefined}/>} variant="outlined" color="primary" sx={{ width:'100%'}}
           onClick={deleteConfirmClose}
           >
             Cancel
@@ -156,7 +164,7 @@ showHomeAlert={setShowAlert} homeAlertMessage={setAlertMessage}
         <Grid item xs={11} md={5}
          order={{xs:2, md:2}}
         >
-          <Button startIcon={<Iconify icon='mdi:form-textbox-password'/>} variant="outlined" color="warning" sx={{width:"100%"}} 
+          <Button startIcon={<Iconify icon='mdi:form-textbox-password' sx={undefined}/>} variant="outlined" color="warning" sx={{width:"100%"}} 
           onClick = {showPassUpdate}
           >
             Change Password
@@ -165,7 +173,7 @@ showHomeAlert={setShowAlert} homeAlertMessage={setAlertMessage}
         <Grid item xs={11} md={4} 
         order={{xs:1, md:3}}
         >
-          <Button startIcon={<Iconify icon='clarity:edit-solid'/>} variant="outlined" sx={{width:"100%"}} 
+          <Button startIcon={<Iconify icon='clarity:edit-solid' sx={undefined}/>} variant="outlined" sx={{width:"100%"}} 
           onClick={showEditUser}
           >
             Edit Details

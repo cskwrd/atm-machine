@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 import { useFormik, Form, FormikProvider } from 'formik';
 // material
-import { Stack, TextField, IconButton, InputAdornment, Snackbar, Alert, Grid, Button, Input } from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment, Grid, Button } from '@mui/material';
 
 // component
 import Iconify from '../Iconify';
@@ -16,14 +16,21 @@ import AlertBanner from '../AlertBanner';
 
 // ----------------------------------------------------------------------
 
-ChangePassword.propTypes = {
-  emailId: PropTypes.string,
-  hidePassUpdate: PropTypes.func,
-  showHomeAlert: PropTypes.func,
-  homeAlertMessage: PropTypes.func,
-};
+// ChangePassword.propTypes = {
+//   emailId: PropTypes.string,
+//   hidePassUpdate: PropTypes.func,
+//   showHomeAlert: PropTypes.func,
+//   homeAlertMessage: PropTypes.func,
+// };
 
-export default function ChangePassword({ hidePassUpdate, emailId, showHomeAlert, homeAlertMessage }) {
+interface IChangePasswordProps {
+  hidePassUpdate: any,
+  emailId: string,
+  showHomeAlert: any,
+  homeAlertMessage: any,
+}
+
+export default function ChangePassword({ hidePassUpdate, emailId, showHomeAlert, homeAlertMessage } : IChangePasswordProps) {
   const smUp = useResponsive('up', 'sm');
 
 
@@ -53,8 +60,7 @@ export default function ChangePassword({ hidePassUpdate, emailId, showHomeAlert,
       //User Register Service call - Upon success user is redirected to dashboard
       //Register fail snackbar displays error
       const update_response = await updatePassword(values, setShowAlert, setAlertMessage, showHomeAlert, homeAlertMessage)
-      {
-        update_response &&
+      if (update_response) {
         hidePassUpdate()
       }
     },
@@ -83,24 +89,28 @@ export default function ChangePassword({ hidePassUpdate, emailId, showHomeAlert,
 
             <AlertBanner showAlert={showAlert} alertMessage={alertMessage} severity='error' />
 
-            <TextField name="oldPassword" fullWidth autoComplete="current-password" type={showPasswordOld ? 'text' : 'password'
+            <TextField
+              // name="oldPassword"
+              fullWidth autoComplete="current-password" type={showPasswordOld ? 'text' : 'password'
             } label="Old Password" {...getFieldProps('oldPassword')} InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton onClick={handleShowPasswordOld} edge="end">
-                    <Iconify icon={showPasswordOld ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                    <Iconify icon={showPasswordOld ? 'eva:eye-fill' : 'eva:eye-off-fill'} sx={undefined} />
                   </IconButton>
                 </InputAdornment>
               ),
             }} error={Boolean(touched.oldPassword && errors.oldPassword)} helperText={touched.oldPassword &&
               errors.oldPassword} />
 
-            <TextField name="newPassword" fullWidth autoComplete="current-password" type={showPasswordNew ? 'text' : 'password'
+            <TextField
+            // name="newPassword"
+            fullWidth autoComplete="current-password" type={showPasswordNew ? 'text' : 'password'
             } label="New Password" {...getFieldProps('newPassword')} InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton onClick={handleShowPasswordNew} edge="end">
-                    <Iconify icon={showPasswordNew ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                    <Iconify icon={showPasswordNew ? 'eva:eye-fill' : 'eva:eye-off-fill'} sx={undefined} />
                   </IconButton>
                 </InputAdornment>
               ),
@@ -108,12 +118,14 @@ export default function ChangePassword({ hidePassUpdate, emailId, showHomeAlert,
               errors.newPassword} />
 
 
-            <TextField name="confirmPassword" fullWidth autoComplete="current-password" type={showPasswordConfirm ? 'text'
+            <TextField
+              // name="confirmPassword"
+              fullWidth autoComplete="current-password" type={showPasswordConfirm ? 'text'
               : 'password'} label="Confirm Password" {...getFieldProps('confirmPassword')} InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPasswordConfirm} edge="end">
-                      <Iconify icon={showPasswordConfirm ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                      <Iconify icon={showPasswordConfirm ? 'eva:eye-fill' : 'eva:eye-off-fill'} sx={undefined} />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -122,14 +134,14 @@ export default function ChangePassword({ hidePassUpdate, emailId, showHomeAlert,
           </Stack>
           <Grid container spacing={2} mt={2} justifyContent={'center'}>
             <Grid item md={6} xs={11}>
-              <Button startIcon={<Iconify icon='material-symbols:cancel' />} size="large" onClick={hidePassUpdate} variant="outlined" color={'error'}
+              <Button startIcon={<Iconify icon='material-symbols:cancel' sx={undefined} />} size="large" onClick={hidePassUpdate} variant="outlined" color={'error'}
                 sx={{ width: '100%' }}
               >
                 Cancel
               </Button>
             </Grid>
             <Grid item md={6} xs={11}>
-              <LoadingButton startIcon={<Iconify icon='teenyicons:tick-circle-solid' />} fullWidth size="large" type='submit' variant="outlined" loading={isSubmitting}>
+              <LoadingButton startIcon={<Iconify icon='teenyicons:tick-circle-solid' sx={undefined} />} fullWidth size="large" type='submit' variant="outlined" loading={isSubmitting}>
                 Update
               </LoadingButton>
             </Grid>

@@ -1,13 +1,19 @@
 import { Stack, TextField } from '@mui/material'
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
-UserDetails.propTypes = {
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    emailId: PropTypes.string,
-  };
+// UserDetails.propTypes = {
+//     firstName: PropTypes.string,
+//     lastName: PropTypes.string,
+//     emailId: PropTypes.string,
+//   };
 
-export default function UserDetails({firstName, lastName, emailId}) {
+interface IUserDetailsProps {
+    firstName: string,
+    lastName: string,
+    emailId: string,
+}
+
+export default function UserDetails({firstName, lastName, emailId} : IUserDetailsProps) {
 
 return (
 <Stack spacing={3}>
