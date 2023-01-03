@@ -1,8 +1,7 @@
-import { Grid, Box, styled, Typography, autocompleteClasses, Popover, MenuList, MenuItem, ListItemIcon, ListItemText, Modal, Stack, Button } from '@mui/material'
+import { Grid, Box, styled, Typography, Popover, MenuList, MenuItem, ListItemIcon, ListItemText, Modal, Stack, Button } from '@mui/material'
 import React, { useState } from 'react'
 import useResponsive from '../../theme/hooks/useResponsive';
-import PropTypes from 'prop-types';
-import { convertToCurrency, currencyFind, getMonthMMM } from '../../utils/helper';
+import { convertToCurrency, currencyFind, CurrencyType, getMonthMMM, zeroPad } from '../../utils/helper';
 import Iconify from '../Iconify';
 import { Link as RouterLink } from 'react-router-dom';
 import dataConfig from '../../config.json';
@@ -14,17 +13,9 @@ const DateBoxStyle = styled('div')(({ theme }) => ({
     height: 85,
     borderRadius: 50,
     padding: 5,
-    background: theme.palette['warning'].lighter,
-    color: theme.palette['warning'].darker
+    background: theme.palette['warning'].light,
+    color: theme.palette['warning'].dark
 }));
-
-ExpenseCard.propTypes = {
-    expenseName: PropTypes.string,
-    expenseAmount: PropTypes.number,
-    expensePerMember: PropTypes.number,
-    expenseOwner: PropTypes.string,
-    currencyType: PropTypes.string
-}
 
 const modelStyle = {
     position: 'absolute',
@@ -37,13 +28,14 @@ const modelStyle = {
     borderRadius: 1
 };
 
+interface IExpenseCardType { expenseId: any, expenseName: string, expenseAmount: number, expensePerMember: number, expenseOwner: string, expenseDate: string, currencyType: CurrencyType }
 
-export default function ExpenseCard({ expenseId, expenseName, expenseAmount, expensePerMember, expenseOwner, expenseDate, currencyType }) {
+export default function ExpenseCard({ expenseId, expenseName, expenseAmount, expensePerMember, expenseOwner, expenseDate, currencyType } : IExpenseCardType) {
     const mdUp = useResponsive('up', 'md');
     const [anchorEl, setAnchorEl] = useState(null);
     const [deleteConfirm, setDeleteConfirm] = useState(false)
 
-    const handleClick = (event) => {
+    const handleClick = (event: { currentTarget: React.SetStateAction<null>; }) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -86,15 +78,15 @@ export default function ExpenseCard({ expenseId, expenseName, expenseAmount, exp
                         left: 20,
                         position: 'relative'
                     }}>
-                        <b>{new Date(expenseDate).getDate().zeroPad()}</b>
+                        <b>{zeroPad(new Date(expenseDate).getDate())}</b>
                     </Typography>
-                    <Typography variant="body" sx={{
+                    <Typography variant="body1" sx={{
                         fontSize: 18,
                         left: 20,
                         bottom: 8,
                         position: 'relative'
                     }}>
-                        {getMonthMMM(expenseDate)}
+                        {getMonthMMM(new Date(expenseDate))}
                     </Typography>
                 </DateBoxStyle>
             </Grid>
@@ -140,7 +132,7 @@ export default function ExpenseCard({ expenseId, expenseName, expenseAmount, exp
                     p: 0,
                     mt: -5
                 }}>
-                    <Iconify aria-describedby={id} icon="charm:menu-meatball" onClick={handleClick} />
+                    <Iconify aria-describedby={id} icon="charm:menu-meatball" onClick={handleClick} sx={undefined} />
                     <Popover
                         id={id}
                         open={open}
@@ -155,20 +147,20 @@ export default function ExpenseCard({ expenseId, expenseName, expenseAmount, exp
                             <MenuItem component={RouterLink}
                                 to={dataConfig.VIEW_EXPENSE_URL + expenseId}>
                                 <ListItemIcon>
-                                    <Iconify icon="carbon:view-filled" />
+                                    <Iconify icon="carbon:view-filled" sx={undefined} />
                                 </ListItemIcon>
                                 <ListItemText>View</ListItemText>
                             </MenuItem>
                             <MenuItem component={RouterLink}
                                 to={dataConfig.EDIT_EXPENSE_URL + expenseId}>
                                 <ListItemIcon>
-                                    <Iconify icon="dashicons:edit-large" />
+                                    <Iconify icon="dashicons:edit-large" sx={undefined} />
                                 </ListItemIcon>
                                 <ListItemText>Edit</ListItemText>
                             </MenuItem>
                             <MenuItem onClick={deleteConfirmOpen} sx={{ color: (theme) => theme.palette['error'].main }}>
                                 <ListItemIcon>
-                                    <Iconify sx={{ color: (theme) => theme.palette['error'].main }} icon="fluent:delete-20-filled" />
+                                    <Iconify sx={{ color: (theme: { palette: { [x: string]: { main: any; }; }; }) => theme.palette['error'].main }} icon="fluent:delete-20-filled" />
                                 </ListItemIcon>
                                 <ListItemText>Delete</ListItemText>
                             </MenuItem>
@@ -188,12 +180,12 @@ export default function ExpenseCard({ expenseId, expenseName, expenseAmount, exp
                                 Are you sure you want to delete the expense?
                             </Typography>
                             <Stack mt={2} spacing={2} direction={'row'}>
-                                <Button startIcon={<Iconify icon='fluent:delete-dismiss-24-filled' />} variant="outlined" color="error" sx={{ width: '100%' }}
+                                <Button startIcon={<Iconify icon='fluent:delete-dismiss-24-filled' sx={undefined} />} variant="outlined" color="error" sx={{ width: '100%' }}
                                     onClick={apiDeleteCall}
                                 >
                                     Delete
                                 </Button>
-                                <Button startIcon={<Iconify icon='material-symbols:cancel' />} variant="outlined" color="primary" sx={{ width: '100%' }}
+                                <Button startIcon={<Iconify icon='material-symbols:cancel' sx={undefined} />} variant="outlined" color="primary" sx={{ width: '100%' }}
                                     onClick={deleteConfirmClose}
                                 >
                                     Cancel

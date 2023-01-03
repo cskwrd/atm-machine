@@ -30,6 +30,7 @@ export const SummaryCards = ({ userTotalExp }) => {
                         </Typography>
                         <Typography variant="h5"
                             sx={{ color: (theme) => theme.palette['primary'].darker }}>
+                            {/* TODO :: use current local for currency symbol */}
                             ₹ {userTotalExp ? convertToCurrency(userTotalExp) : 0}
                         </Typography>
                     </Box>
