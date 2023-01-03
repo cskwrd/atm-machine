@@ -1,13 +1,14 @@
-import { Box, Button, Container, Grid, Paper, styled, Typography } from '@mui/material'
+import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getExpDetailsService } from "../../services/expenseServices";
 import useResponsive from "../../theme/hooks/useResponsive";
-import { convertToCurrency, currencyFind } from '../../utils/helper';
+import { convertToCurrency, currencyFind, CurrencyType } from '../../utils/helper';
 import Loading from "../loading";
 import AlertBanner from '../AlertBanner';
 import { Link as RouterLink } from 'react-router-dom';
 import dataConfig from '../../config.json';
+import { IExpenseDetails } from '../../api';
 
 export const ViewExpense = () => {
     const navigate = useNavigate();
@@ -17,16 +18,9 @@ export const ViewExpense = () => {
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
-    const [expenseDetails, setExpenseDetails] = useState()
-    const [color] = useState(['primary', 'secondary', 'error', 'warning', 'info', 'success']);
-    const [expenseDate, setExpenseDate] = useState()
-    const TextStyle = styled('span')(({ theme }) => ({
-        marginLeft: 5,
-        padding: 6,
-        background: theme.palette['primary'].lighter,
-        color: theme.palette['primary'].darker,
-        borderRadius: 5
-    }));
+    const [expenseDetails, setExpenseDetails] = useState<IExpenseDetails>()
+    // const [color] = useState<string[]>(['primary', 'secondary', 'error', 'warning', 'info', 'success']);
+    const [expenseDate, setExpenseDate] = useState<Date>()
 
     useEffect(() => {
         const getExpenseDetails = async () => {
@@ -35,26 +29,47 @@ export const ViewExpense = () => {
                 id: expenseId
             }
             const response_exp = await getExpDetailsService(expenseIdJson, setAlert, setAlertMessage)
-            setExpenseDetails(response_exp?.data?.expense)
-            const date =new Date(response_exp?.data?.expense?.expenseDate).toDateString()
-            setExpenseDate(date)
+            if (response_exp !== false) {
+                setExpenseDetails(response_exp?.data?.expense)
+                setExpenseDate(response_exp?.data?.expense?.expenseDate)
+            }
             setLoading(false)
         }
 
         getExpenseDetails()
-    }, [])
+    }, [expenseId])
 
     return (
         <>
             {loading ? <Loading /> :
-                <Container maxWidth='md' disableGutters='true' sx={{
+                <Container maxWidth='md' disableGutters={true} sx={{
                     bgcolor: 'background.paper',
                     borderRadius: 2,
                     boxShadow: 5,
                 }}>
                     <AlertBanner severity='error' alertMessage={alertMessage} showAlert={alert} />
                     <Box sx={{
-                        bgcolor: (theme) => theme.palette[color[Math.floor(Math.random() * 5)]].lighter, p: 6, mb: 3,
+                        bgcolor: (theme) => {
+                            switch (Math.floor(Math.random() * 5)) {
+                                case 0:
+                                    return theme.palette['primary'].light;
+                                case 1:
+                                    return theme.palette['secondary'].light;
+                                case 2:
+                                    return theme.palette['error'].light;
+                                case 3:
+                                    return theme.palette['warning'].light;
+                                case 4:
+                                    return theme.palette['info'].light;
+                                default:
+                                    return theme.palette['success'].light;
+                            }
+                            // TODO :: do something like the following instead
+                            // color is a state variable
+                            // return theme.palette[color[Math.floor(Math.random() * 5)]].light
+                        },
+                        p: 6,
+                        mb: 3,
                         width: '100%'
                     }}
 
@@ -62,7 +77,7 @@ export const ViewExpense = () => {
                         <Typography variant='h3'>
                             {expenseDetails?.expenseName}
                         </Typography>
-                        <Typography variant='body'>
+                        <Typography variant='body1'>
                             {expenseDetails?.expenseDescription}
                         </Typography>
                     </Box>
@@ -74,16 +89,17 @@ export const ViewExpense = () => {
                             </Typography>
                         </Grid>
                         <Grid item md={6} xs={12}>
-                        <Typography variant='h6'>
-                            Date : {expenseDate}
-
+                            <Typography variant='h6'>
+                                {/* TODO :: this date string likely needs foramtting */}
+                                Date : {expenseDate?.toDateString()}
                             </Typography>
                         </Grid>
                        
 
                         <Grid item md={6} xs={12}>
                             <Typography variant='h6'>
-                                Amount : {currencyFind(expenseDetails?.expenseCurrency) + " " + convertToCurrency(expenseDetails?.expenseAmount)}
+                                {/* TODO :: set default symbol based on locale */}                                                {/* TODO :: if zero or null it should replace with string to indicate that not equal split between members, also uneven splits not implemented yet */}
+                                Amount per person: {currencyFind(expenseDetails?.expenseCurrency ?? CurrencyType.USD) + " " + convertToCurrency(expenseDetails?.expensePerMember ?? 0)}
                             </Typography>
                         </Grid>
 
@@ -101,7 +117,8 @@ export const ViewExpense = () => {
 
                         <Grid item xs={12}>
                             <Typography variant='h6' color={(theme) => theme.palette['error'].main}>
-                                Amount per person: {currencyFind(expenseDetails?.expenseCurrency) + " " + convertToCurrency(expenseDetails?.expensePerMember)}
+                                {/* TODO :: set default symbol based on locale */}                                                {/* TODO :: if zero or null it should replace with string to indicate that not equal split between members, also uneven splits not implemented yet */}
+                                Amount per person: {currencyFind(expenseDetails?.expenseCurrency ?? CurrencyType.USD) + " " + convertToCurrency(expenseDetails?.expensePerMember ?? 0)}
                             </Typography>
                         </Grid>
 

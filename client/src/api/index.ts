@@ -61,6 +61,7 @@ export interface IExpenseDetails {
   expenseType: string,
   _id: string,
   expenseCurrency: CurrencyType,
+  expensePerMember: number,
 }
 
 interface IExpenseDetailsResponseType {
