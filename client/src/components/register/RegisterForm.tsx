@@ -73,7 +73,7 @@ export default function RegisterForm() {
             alignItems="center" justifyContent="space-between"
             >
             <TextField
-              name="firstName"
+              // name="firstName"
               fullWidth
               type="text"
               label="First Name"
@@ -82,7 +82,7 @@ export default function RegisterForm() {
               helperText={touched.firstName && errors.firstName} />
 
               <TextField
-              name="lastName"
+              // name="lastName"
               fullWidth
               type="text"
               label="Last Name"
@@ -92,7 +92,7 @@ export default function RegisterForm() {
             </Stack>
 
             <TextField
-              name="emailId"
+              // name="emailId"
               fullWidth
               autoComplete="username"
               type="email"
@@ -102,7 +102,7 @@ export default function RegisterForm() {
               helperText={touched.emailId && errors.emailId} />
 
             <TextField
-              name="password"
+              // name="password"
               fullWidth
               autoComplete="current-password"
               type={showPassword ? 'text' : 'password'}
@@ -112,7 +112,7 @@ export default function RegisterForm() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword} edge="end">
-                      <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                      <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} sx={undefined} />
                     </IconButton>
                   </InputAdornment>
                 ),

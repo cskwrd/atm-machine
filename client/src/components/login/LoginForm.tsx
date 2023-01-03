@@ -63,7 +63,7 @@ export default function LoginForm() {
              </Alert>
             )}
             <TextField
-              name="emailId"
+              // name="emailId"
               fullWidth
               autoComplete="username"
               type="email"
@@ -73,7 +73,7 @@ export default function LoginForm() {
               helperText={touched.emailId && errors.emailId} />
 
             <TextField
-              name="password"
+              // name="password"
               fullWidth
               autoComplete="current-password"
               type={showPassword ? 'text' : 'password'}
@@ -83,7 +83,7 @@ export default function LoginForm() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword} edge="end">
-                      <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                      <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} sx={undefined} />
                     </IconButton>
                   </InputAdornment>
                 ),

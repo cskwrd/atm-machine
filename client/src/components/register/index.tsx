@@ -8,11 +8,9 @@ import { Card, Link, Container, Typography, Stack, Box } from '@mui/material';
 
 // hooks
 import useResponsive from '../../theme/hooks/useResponsive';
-import Logo from '../Logo';
-import LoginForm from './LoginForm';
-import Copyright from '../Copyright';
 
-import configData from '../../config.json'
+import RegisterForm from "./RegisterForm"
+import Copyright from '../Copyright';
 
 const RootStyle = styled('div')(({
     theme
@@ -62,22 +60,15 @@ const SectionStyle = styled(Card)(({ theme }) => ({
 export default function Login() {
     const smUp = useResponsive('up', 'sm');
     const mdUp = useResponsive('up', 'md');
-    //Function to check if the user is already logged in - check localStorage 
-    const user = JSON.parse(localStorage.getItem('profile'))
-    //If user logged in the page is auto directed to dashboard
-    if(user){
-      user.accessToken && (window.location.href=configData.DASHBOARD_URL)  
-    }
     return ( 
-      <>
         <RootStyle>
         <HeaderStyle>
         <Box/>
           {smUp && (
             <Typography variant="body2" sx={{ mt: { md: -2 } }}>
-              Don’t have an account? {''}
-              <Link variant="subtitle2" component={RouterLink} to="/register">
-                Get started
+              Already have an account?  {''}
+              <Link variant="subtitle2" component={RouterLink} to="/">
+                Login
               </Link>
             </Typography>
           )}
@@ -85,38 +76,36 @@ export default function Login() {
         {mdUp && (
           <SectionStyle>
             <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
+            Manage the expense more effectively with ATM Machine!
             </Typography>
-            <img src="/static/illustrations/illustration_login.png" alt="login" />
+            <img src="/static/illustrations/illustration_register.png" alt="login" />
           </SectionStyle>
         )}
          <Container maxWidth="sm">
           <ContentStyle>
             <Typography variant="h4" gutterBottom>
-              Sign in to ATM Machine!
+                Get started absolutely free.
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Enter your details below.</Typography>
+            <Typography sx={{ color: 'text.secondary', mb: 5 }}>Open Source, Group expense splitting app!</Typography>
 
+            <RegisterForm />
             {/* <AuthSocial />*/}
-
-            <LoginForm /> 
 
             {!smUp && (
               <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-                Don’t have an account?{' '}
-                <Link variant="subtitle2" component={RouterLink} to="/register">
-                  Get started
+                Already have an account?  {''}
+                <Link variant="subtitle2" component={RouterLink} to="/">
+                Login
                 </Link>
               </Typography>
             )}
-             <Stack spacing={3} sx={{mt: 5}}>
-            <Copyright/>
+
+            <Stack spacing={3} sx={{mt: 5}}>
+                <Copyright/>
             </Stack> 
           </ContentStyle>
         </Container>
         </RootStyle>
-        
-        </>
     )
 }
