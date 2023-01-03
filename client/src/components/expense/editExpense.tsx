@@ -8,13 +8,14 @@ import { Form, FormikProvider, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import useResponsive from '../../theme/hooks/useResponsive';
-import { currencyFind } from '../../utils/helper';
+import { currencyFind, CurrencyType } from '../../utils/helper';
 import { editExpenseService, getExpDetailsService } from '../../services/expenseServices';
 import { useParams } from 'react-router-dom'
 import { getGroupDetailsService } from '../../services/groupServices';
 import Loading from '../loading';
 import { useNavigate } from "react-router-dom";
 import AlertBanner from '../AlertBanner';
+import { IExpenseDetails } from '../../api';
 
 
 
@@ -25,8 +26,8 @@ export default function EditExpense() {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
-  var [groupMembers,setGroupMembers] = useState()
-  const [expenseDetails, setExpenseDetails] = useState()
+  var [groupMembers, setGroupMembers] = useState<string[]>([]);
+  const [expenseDetails, setExpenseDetails] = useState<IExpenseDetails>()
  
   //Formink schema 
   const editExpenseSchema = Yup.object().shape({
@@ -39,16 +40,16 @@ export default function EditExpense() {
 
   const formik = useFormik({
     initialValues: {
-      expenseName: null,
-      expenseDescription: null,
-      expenseAmount: null,
-      expenseCategory: null,
-      expenseDate: null,
-      expenseMembers: null,
-      expenseOwner: null,
-      groupId: null,
-      expenseType: null,
-      id: null
+      expenseName: "",
+      expenseDescription: "",
+      expenseAmount: 0,
+      expenseCategory: "",
+      expenseDate: new Date(),
+      expenseMembers: [] as string[],
+      expenseOwner: "",
+      groupId: "",
+      expenseType: "CurrencyType.USD",
+      id: ""
     },
     validationSchema: editExpenseSchema,
     onSubmit: async () => {
@@ -77,28 +78,32 @@ export default function EditExpense() {
             id: params.expenseId
         }
         const response_exp = await getExpDetailsService(expenseIdJson, setAlert, setAlertMessage)
-        setExpenseDetails(response_exp?.data?.expense)
-        const exp = response_exp?.data?.expense
-        console.log(exp)
-        const groupIdJson = {
-            id: response_exp?.data?.expense?.groupId
+        if (response_exp !== false) {
+          setExpenseDetails(response_exp?.data?.expense)
+          const exp = response_exp?.data?.expense
+          console.log(exp)
+          const groupIdJson = {
+              id: response_exp?.data?.expense?.groupId
+          }
+          const response_group = await getGroupDetailsService(groupIdJson, setAlert, setAlertMessage)
+          if (response_group !== false) {
+            formik.values.expenseName = exp?.expenseName
+            formik.values.expenseDescription = exp?.expenseDescription
+            formik.values.expenseOwner = exp?.expenseOwner
+            formik.values.expenseMembers = exp?.expenseMembers
+            formik.values.expenseAmount = exp?.expenseAmount
+            formik.values.expenseCategory = exp?.expenseCategory
+            formik.values.expenseDate = exp?.expenseDate
+            formik.values.groupId = exp?.groupId
+            formik.values.expenseType = exp?.expenseType
+            formik.values.id = exp?._id
+            setGroupMembers(response_group?.data?.group?.groupMembers)
+          }
         }
-        const response_group = await getGroupDetailsService(groupIdJson, setAlert, setAlertMessage)
-        formik.values.expenseName = exp?.expenseName
-        formik.values.expenseDescription = exp?.expenseDescription
-        formik.values.expenseOwner = exp?.expenseOwner
-        formik.values.expenseMembers = exp?.expenseMembers
-        formik.values.expenseAmount = exp?.expenseAmount
-        formik.values.expenseCategory = exp?.expenseCategory
-        formik.values.expenseDate = exp?.expenseDate
-        formik.values.groupId = exp?.groupId
-        formik.values.expenseType = exp?.expenseType
-        formik.values.id = exp?._id
-        setGroupMembers(response_group?.data?.group?.groupMembers)
         setLoading(false)
     }
     getExpenseDetails()
-}, []);
+}, [formik.values, params.expenseId]);
   return (
     <>
     {loading? <Loading/> : 
@@ -125,7 +130,7 @@ export default function EditExpense() {
               <Grid item xs={12} >
                 <TextField fullWidth
                   type="text"
-                  name="expenseName"
+                  // name="expenseName"
                   id="outlined-basic"
                   label="Expense Name"
                   variant="outlined"
@@ -139,7 +144,7 @@ export default function EditExpense() {
                   multiline
                   rows={2}
                   fullWidth
-                  name="expenseDescription"
+                  // name="expenseDescription"
                   id="outlined-basic"
                   label="Expense Description"
                   variant="outlined"
@@ -155,7 +160,7 @@ export default function EditExpense() {
                 >
                   <InputLabel id="expense-owner">Expense Owner</InputLabel>
                   <Select
-                    name='expenseOwner'
+                    // name='expenseOwner'
                     labelId="expense-owner"
                     id="demo-simple-select"
                     label="Expense Owner"
@@ -184,7 +189,7 @@ export default function EditExpense() {
                     multiple
                     {...getFieldProps('expenseMembers')}
                     input={<OutlinedInput id="expense-members" label="Expense Members" />}
-                    renderValue={(selected) => (
+                    renderValue={(selected: string[]) => (
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                         {selected.map((value) => (
                           <Chip key={value} label={value} />
@@ -208,7 +213,7 @@ export default function EditExpense() {
               <Grid item xs={6} >
                 <TextField
                   fullWidth
-                  name="expenseAmount"
+                  // name="expenseAmount"
                   id="outlined-basic"
                   type="number"
 
@@ -219,7 +224,7 @@ export default function EditExpense() {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        {currencyFind(expenseDetails?.expenseCurrency)}
+                        {currencyFind(expenseDetails?.expenseCurrency ?? CurrencyType.USD)} {/* TODO :: set default based on locale */}
                       </InputAdornment>
                     ),
                   }}
@@ -234,7 +239,7 @@ export default function EditExpense() {
                 >
                   <InputLabel id="expense-category">Expense Category</InputLabel>
                   <Select
-                    name='expenseCategory'
+                    // name='expenseCategory'
                     labelId="expense-category"
                     id="demo-simple-select"
                     label="Expense Category"
@@ -257,7 +262,7 @@ export default function EditExpense() {
                 >
                   <InputLabel id="expense-type">Payment Method</InputLabel>
                   <Select
-                    name='expenseType'
+                    // name='expenseType'
                     labelId="expense-type"
                     id="demo-simple-select"
                     label="Payment Method"
@@ -275,26 +280,26 @@ export default function EditExpense() {
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   {mdUp ? 
                   <DesktopDatePicker
-                  name="expenseDate"
+                  // name="expenseDate"
                   label="Expense Date"
                   inputFormat="dd/MM/yyyy"
                   renderInput={(params) => <TextField {...params} sx={{width: '100%'}}
                   />}
                   value={formik.values.expenseDate}
                   onChange={(value) => {
-                  formik.setFieldValue('expenseDate', Date.parse(value));
+                  formik.setFieldValue('expenseDate', value);
                       }}
                 />
                   :
                   <MobileDatePicker
-                    name="expenseDate"
+                    // name="expenseDate"
                     label="Expense Date"
                     inputFormat="dd/MM/yyyy"
                     renderInput={(params) => <TextField {...params} sx={{width: '100%'}}
                     />}
                     value={formik.values.expenseDate}
                     onChange={(value) => {
-        		        formik.setFieldValue('expenseDate', Date.parse(value));
+        		        formik.setFieldValue('expenseDate', value);
         		            }}
                         
                   />}

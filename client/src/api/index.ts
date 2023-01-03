@@ -40,12 +40,32 @@ setGroupMembers(response_group?.data?.group?.groupMembers);
 formik.values.expenseMembers = response_group?.data?.group?.groupMembers;
 */
 
-export interface IGroupDetailsResponseType {
+interface IGroupDetailsResponseType {
   data: {
     group: {
       groupCurrency: CurrencyType,
       groupMembers: string[],
     }
+  }
+}
+
+export interface IExpenseDetails {
+  groupId: any,
+  expenseName: string,
+  expenseDescription: string,
+  expenseOwner: string,
+  expenseMembers: string[],
+  expenseAmount: number,
+  expenseCategory: string,
+  expenseDate: Date,
+  expenseType: string,
+  _id: string,
+  expenseCurrency: CurrencyType,
+}
+
+interface IExpenseDetailsResponseType {
+  data: {
+    expense: IExpenseDetails,
   }
 }
 
@@ -75,7 +95,7 @@ export const getUserCategoryExp = (formData: any) => API.post('/api/expense/v1/u
 
 export const getRecentUserExp = (formData: any) => API.post('/api/expense/v1/user/recent', formData, accessHeader)
 
-export const getExpDetails = (formData: any) => API.post('/api/expense/v1/view', formData, accessHeader)
+export const getExpDetails = (formData: any) => API.post<any, IExpenseDetailsResponseType, number>('/api/expense/v1/view', formData, accessHeader)
 
 export const getSettle = (formData: any) => API.post('/api/group/v1/settlement', formData, accessHeader)
 
