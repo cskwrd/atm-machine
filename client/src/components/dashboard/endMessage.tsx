@@ -7,7 +7,7 @@ export const EndMessage = () => {
         <Box sx={{
             p: 5,
             bgcolor: (theme) => theme.palette['success'].light,
-            color: (theme) => theme.palette['success'].darker,
+            color: (theme) => theme.palette['success'].dark,
             borderRadius: 2,
         }}>
             <Grid container spacing={3} justifyContent={'center'}
@@ -17,7 +17,7 @@ export const EndMessage = () => {
                     <img src="/static/illustrations/dashboard-card.png" alt="dashboard" />
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="body" pb={2} >
+                    <Typography variant="body1" pb={2} >
                         Keep track of shared expenses and settle your corresponding balances in a convenient and personalized way.
                     </Typography>
 

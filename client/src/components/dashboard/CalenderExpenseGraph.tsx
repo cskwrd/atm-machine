@@ -1,4 +1,4 @@
-import { Box, FormControlLabel, FormGroup, Grid, Switch, Typography } from "@mui/material"
+import { Box, FormControlLabel, FormGroup, Switch, Typography } from "@mui/material"
 import { Line } from "react-chartjs-2";
 import 'chart.js/auto'
 import { useEffect, useState } from "react";
@@ -12,11 +12,11 @@ export const CalenderExpenseGraph = () => {
     const mdUp = useResponsive('up', 'md');
     const [montlyView, setMonthlyView] = useState(false)
     const [loading, setLoading] = useState(true)
-    const profile = JSON.parse(localStorage.getItem("profile"))
+    const profile = JSON.parse(localStorage.getItem("profile") ?? "{}")
     const [alert, setAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-    const [userMonthlyExp, setUserMonthlyExp] = useState()
-    const [userDailyExp, setUserDailyExp] = useState()
+    const [userMonthlyExp, setUserMonthlyExp] = useState<any[]>()
+    const [userDailyExp, setUserDailyExp] = useState<any[]>()
 
     const toggleMonthlyView = () => {
         setMonthlyView(!montlyView)
@@ -33,29 +33,6 @@ export const CalenderExpenseGraph = () => {
                 fill: true
             }
         ]
-    }
-
-    const options = {
-        tension: 0.4,
-        maintainAspectRatio: false,
-        plugins: {
-            title: {
-                display: false,
-                text: montlyView? "Daily expense graph" : "Monthly expense graph",
-                font: { size: 18 },
-                padding: 19,
-                position: 'bottom'
-            },
-            datalabels: {
-                display: 'true',
-                formatter: (value) => {
-                    return value + '%';
-                }
-            },
-            legend: {
-                display: false,
-            },
-        }
     };
 
     useEffect(() => {
@@ -64,9 +41,9 @@ export const CalenderExpenseGraph = () => {
         const userIdJson = {
             user: profile.emailId
         }
-        const response_group_monthly = await getUserMonthlyExpService(userIdJson, setAlert, setAlertMessage)
+        const response_group_monthly: any = await getUserMonthlyExpService(userIdJson, setAlert, setAlertMessage)
         setUserMonthlyExp(response_group_monthly.data.data)
-        const response_group_daily = await getUserDailyExpService(userIdJson, setAlert, setAlertMessage)
+        const response_group_daily: any = await getUserDailyExpService(userIdJson, setAlert, setAlertMessage)
         setUserDailyExp(response_group_daily.data.data)
         setLoading(false)
 
@@ -74,7 +51,7 @@ export const CalenderExpenseGraph = () => {
     getUserDetails();
         
 
-    }, [])
+    }, [profile.emailId])
     return (
         <>{loading? <Loading/> : 
         <Box sx={{
@@ -91,7 +68,28 @@ export const CalenderExpenseGraph = () => {
             </Typography>
             
             <Box height={350} my={2}>
-                <Line data={data} options={options} />
+                <Line data={data} options={{
+                    // tension: 0.4,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: false,
+                            text: montlyView? "Daily expense graph" : "Monthly expense graph",
+                            font: { size: 18 },
+                            padding: 19,
+                            position: 'bottom'
+                        },
+                        datalabels: {
+                            display: 'true',
+                            formatter: (value: string) => {
+                                return value + '%';
+                            }
+                        },
+                        legend: {
+                            display: false,
+                        },
+                    }
+                }} />
             </Box>
             <FormGroup>
                 <FormControlLabel control={<Switch defaultChecked onClick={toggleMonthlyView} />} label="Monthly expense view" />

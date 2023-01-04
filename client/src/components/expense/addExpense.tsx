@@ -76,8 +76,7 @@ export default function AddExpense() {
     },
   });
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } =
-    formik;
+  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;

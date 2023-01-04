@@ -8,14 +8,18 @@ import Loading from '../../loading';
 import { Doughnut } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import 'chart.js/auto'
-import { convertToCurrency, currencyFind } from '../../../utils/helper';
+import { convertToCurrency, currencyFind, CurrencyType } from '../../../utils/helper';
 
-const GroupCategoryGraph = (currencyType) => {
+interface IGroupCategoryGraphProps {
+    currencyType: CurrencyType;
+}
+
+const GroupCategoryGraph: React.FunctionComponent<IGroupCategoryGraphProps> = ({ currencyType }) => {
     const params = useParams();
     const [alert, setAlert] = useState(false)
-    const [alertMessage, setAlertMessage] = useState()
+    const [alertMessage, setAlertMessage] = useState<string>("")
     const [loading, setLoading] = useState(true)
-    const [categoryExp, setCategoryExp] = useState()
+    const [categoryExp, setCategoryExp] = useState<any[]>()
 
     const data = {
         labels: categoryExp?.map(category => (category._id)),
@@ -33,30 +37,10 @@ const GroupCategoryGraph = (currencyType) => {
                     'rgba(255, 159, 64, 0.7)',
                 ],
                 borderWidth: 1,
-                //borderColor: ["red", "green", "Blue", "Yellow", "Orange", "Violet"]
+                // borderColor: ["red", "green", "Blue", "Yellow", "Orange", "Violet"]
             }
         ]
     }
-
-    const options = {
-        
-        plugins: {   
-            datalabels: {
-                color:'error',
-                formatter: (value) => {
-                  return currencyFind(currencyType) + ' ' + convertToCurrency(value) ;
-                }
-              },
-            legend: {
-                display: true,
-                position: 'bottom',
-                labels: {
-                    padding: 18
-                },
-            },
-        }
-    };
-
 
     useEffect(() => {
         const getGroupCategoryExpense = async () => {
@@ -64,27 +48,41 @@ const GroupCategoryGraph = (currencyType) => {
             const groupIdJson = {
                 id: params.groupId
             }
-            const category_exp =
-                await getGroupCategoryExpService(groupIdJson, setAlert, setAlertMessage)
+            const category_exp: any = await getGroupCategoryExpService(groupIdJson, setAlert, setAlertMessage)
             setCategoryExp(category_exp.data.data)
             setLoading(false)
         }
         getGroupCategoryExpense()
+    }, [params.groupId])
 
-    }, [])
+    if (loading) {
+        return <Loading />
+    }
+
     return (
         <>
-            {loading ? <Loading /> :
-                <>
-                    <AlertBanner showAlert={alert} alertMessage={alertMessage} severity='error' />
-                    <Doughnut data={data} options={options} plugins={[ChartDataLabels]}/>
-                    {/* <Doughnut data={data} options={options} plugins={[ChartDataLabels]}/> */}
-                    <Typography variant='subtitle' p={3}>
-                        <center>Category Expense chart</center>
-                    </Typography>
-                </>}
+            <AlertBanner showAlert={alert} alertMessage={alertMessage} severity='error' />
+            <Doughnut data={data} options={{
+                plugins: {   
+                    datalabels: {
+                        color:'error',
+                        formatter: (value: number) => {
+                            return currencyFind(currencyType) + ' ' + convertToCurrency(value) ;
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                            padding: 18
+                        },
+                    },
+                }
+            }} plugins={[ChartDataLabels as any]}/>
+            <Typography variant='subtitle1' p={3}>
+                <center>Category Expense chart</center>
+            </Typography>
         </>
-
     )
 }
 

@@ -19,7 +19,7 @@ export const ViewExpense = () => {
     const [alert, setAlert] = useState(false)
     const [alertMessage, setAlertMessage] = useState('')
     const [expenseDetails, setExpenseDetails] = useState<IExpenseDetails>()
-    // const [color] = useState<string[]>(['primary', 'secondary', 'error', 'warning', 'info', 'success']);
+    const [color] = useState<string[]>(['primary', 'secondary', 'error', 'warning', 'info', 'success']);
     const [expenseDate, setExpenseDate] = useState<Date>()
 
     useEffect(() => {
@@ -49,25 +49,7 @@ export const ViewExpense = () => {
                 }}>
                     <AlertBanner severity='error' alertMessage={alertMessage} showAlert={alert} />
                     <Box sx={{
-                        bgcolor: (theme) => {
-                            switch (Math.floor(Math.random() * 5)) {
-                                case 0:
-                                    return theme.palette['primary'].light;
-                                case 1:
-                                    return theme.palette['secondary'].light;
-                                case 2:
-                                    return theme.palette['error'].light;
-                                case 3:
-                                    return theme.palette['warning'].light;
-                                case 4:
-                                    return theme.palette['info'].light;
-                                default:
-                                    return theme.palette['success'].light;
-                            }
-                            // TODO :: do something like the following instead
-                            // color is a state variable
-                            // return theme.palette[color[Math.floor(Math.random() * 5)]].light
-                        },
+                        bgcolor: (theme: any) => theme.palette[color[Math.floor(Math.random() * 5)]].light,
                         p: 6,
                         mb: 3,
                         width: '100%'

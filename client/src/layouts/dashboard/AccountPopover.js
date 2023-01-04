@@ -6,7 +6,7 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton } from '@
 
 import gravatarUrl from 'gravatar-url';
 // components
-import MenuPopover from '../../components/MenuPopover';
+import { MenuPopover } from '../../components/MenuPopover';
 
 import { logout } from '../../services/auth';
 

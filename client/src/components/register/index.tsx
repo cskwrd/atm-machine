@@ -93,7 +93,7 @@ export default function Login() {
             {/* <AuthSocial />*/}
 
             {!smUp && (
-              <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+              <Typography variant="body2" style={{ textAlign: "center" }} sx={{ mt: 3 }}>
                 Already have an account?  {''}
                 <Link variant="subtitle2" component={RouterLink} to="/">
                 Login

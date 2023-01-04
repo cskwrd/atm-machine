@@ -11,14 +11,14 @@ const About = () => {
             my: 10,
             py:10
         }}>
-<div align="center">
+<div style={{ textAlign: "center" }}>
   <a href="/">
     <img src="https://github.com/cskwrd/atm-machine/blob/master/client/public/static/logo.png?raw=true" alt="Logo" width="80" height="80"/>
   </a>
 
-  <h2 align="center">ATM Machine</h2>
+  <h2 style={{ textAlign: "center" }}>ATM Machine</h2>
 
-  <p align="center">
+  <p style={{ textAlign: "center" }}>
     Build with the MERN stack (MongoDB, Express, React and NodeJS).
     <br />
     <br/>
@@ -111,11 +111,11 @@ MERN Stack Group Expense Splitting Application
 <Typography sx={{wordWrap: 'break-word'}}>
   <code>
 cd client <br/><br/>
-//<span class5="hljs-keyword">to</span> <span class="hljs-keyword">install</span> <span class="hljs-keyword">client</span>-side dependencies <br/>
-npm <span class="hljs-keyword">install</span>  <br/>
+{/* //<span class5="hljs-keyword">to</span> <span className="hljs-keyword">install</span> <span className="hljs-keyword">client</span>-side dependencies <br/> */}
+npm <span className="hljs-keyword">install</span>  <br/>
 <br/>
-//<span class="hljs-keyword">to</span> <span class="hljs-keyword">start</span> the <span class="hljs-keyword">client</span><br/>
-npm <span class="hljs-keyword">start</span> 
+{/* //<span className="hljs-keyword">to</span> <span className="hljs-keyword">start</span> the <span className="hljs-keyword">client</span><br/> */}
+npm <span className="hljs-keyword">start</span> 
 </code>
 </Typography>
 </Box></pre>
@@ -126,9 +126,9 @@ npm <span class="hljs-keyword">start</span>
 <li>create a .env file in the root of your directory.</li>
 <li>Provided the below details</li>
 </ul>
-<pre><Box sx={{bgcolor:"#f0f0f0", p: 4, my: 4, overflowY: "scroll"}}><span class="hljs-attr">PORT</span>=<span class="hljs-number">3001</span>
-<br/><span class="hljs-attr">MONGODB_URI</span>=
-<br/><span class="hljs-attr">ACCESS_TOKEN_SECRET</span>=
+<pre><Box sx={{bgcolor:"#f0f0f0", p: 4, my: 4, overflowY: "scroll"}}><span className="hljs-attr">PORT</span>=<span className="hljs-number">3001</span>
+<br/><span className="hljs-attr">MONGODB_URI</span>=
+<br/><span className="hljs-attr">ACCESS_TOKEN_SECRET</span>=
 </Box></pre><p>Please follow <a href="https://dev.to/dalalrohit/how-to-connect-to-mongodb-atlas-using-node-js-k9i">This tutorial</a> to create your mongoDB connection url, which you&#39;ll use as your MONGODB_URI</p>
 <br/>
 <p>Provide some random key in 'ACCESS_TOKEN_SECRET' or you could generate one using node. Enter the below command in terminal to genrate a random secret key </p>
@@ -137,10 +137,10 @@ npm <span class="hljs-keyword">start</span>
 </Box>
 <p>In the second terminal (*in the project root directory (back-end))</p>
 <pre><Box sx={{bgcolor:"#f0f0f0", p: 4, my: 4, overflowY: "scroll"}}>
-<Typography sx={{wordWrap: 'break-word'}}>//to install server-side dependencies</Typography>
-npm <span class="hljs-keyword">install</span> <br/><br/>
-<Typography sx={{wordWrap: 'break-word'}}>//<span class="hljs-keyword">to</span> <span class="hljs-keyword">start</span> the <span class="hljs-keyword">server</span></Typography>
-<Typography sx={{wordWrap: 'break-word'}}>npm <span class="hljs-keyword">start</span> </Typography>
+{/* <Typography sx={{wordWrap: 'break-word'}}>//to install server-side dependencies</Typography> */}
+npm <span className="hljs-keyword">install</span> <br/><br/>
+{/* <Typography sx={{wordWrap: 'break-word'}}>//<span className="hljs-keyword">to</span> <span className="hljs-keyword">start</span> the <span className="hljs-keyword">server</span></Typography> */}
+<Typography sx={{wordWrap: 'break-word'}}>npm <span className="hljs-keyword">start</span> </Typography>
 </Box></pre><h2 id="comment">Comment</h2>
 <br/>
 <p>I intend to keep adding more features to this application, so if you like it, please give it a star, that will encourage me to 

@@ -1,5 +1,6 @@
 import { assertUnreachable } from "./assertions";
 
+// todo https://stackabuse.com/how-to-format-number-as-currency-string-in-javascript/
 export function convertToCurrency(number: number) {
   number = Math.abs(Math.round((number + Number.EPSILON) * 100) / 100);
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
