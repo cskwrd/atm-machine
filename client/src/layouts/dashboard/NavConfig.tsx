@@ -5,7 +5,7 @@ import configData from '../../config.json'
 
 // ----------------------------------------------------------------------
 
-const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
+const getIcon = (name: string) => <Iconify icon={name} width={22} height={22} sx={undefined} />;
 
 const navConfig = [
   {
