@@ -1,7 +1,7 @@
 import { Box, Grid, Stack, styled, Typography } from '@mui/material'
-import React from 'react'
-import { convertToCurrency } from '../../utils/helper'
+import { CurrencyType } from '../../utils/helper'
 import Iconify from '../Iconify'
+import { CurrencyDisplay } from './CurrencyDisplay'
 
 export const SummaryCards = ({ userTotalExp }) => {
     const LabelIconStyle = styled('div')(({ theme }) => ({
@@ -30,8 +30,7 @@ export const SummaryCards = ({ userTotalExp }) => {
                         </Typography>
                         <Typography variant="h5"
                             sx={{ color: (theme) => theme.palette['primary'].darker }}>
-                            {/* TODO :: use current local for currency symbol */}
-                            ₹ {userTotalExp ? convertToCurrency(userTotalExp) : 0}
+                            <CurrencyDisplay value={userTotalExp ?? 0} currencyType={CurrencyType.USD} />
                         </Typography>
                     </Box>
                 </Stack>
