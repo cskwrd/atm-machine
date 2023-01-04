@@ -108,7 +108,7 @@ export const getUserCategoryExp = (formData: any) => API.post('/api/expense/v1/u
 
 export const getRecentUserExp = (formData: any) => API.post('/api/expense/v1/user/recent', formData, accessHeader)
 
-export const getExpDetails = (formData: any) => API.post<any, IExpenseDetailsResponseType, number>('/api/expense/v1/view', formData, accessHeader)
+export const getExpDetails = (formData: any) => API.post('/api/expense/v1/view', formData, accessHeader)
 
 export const getSettle = (formData: any) => API.post('/api/group/v1/settlement', formData, accessHeader)
 

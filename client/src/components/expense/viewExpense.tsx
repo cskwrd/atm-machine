@@ -9,6 +9,7 @@ import AlertBanner from '../AlertBanner';
 import { Link as RouterLink } from 'react-router-dom';
 import dataConfig from '../../config.json';
 import { IExpenseDetails } from '../../api';
+import { CurrencyDisplay } from '../dashboard/CurrencyDisplay';
 
 export const ViewExpense = () => {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ export const ViewExpense = () => {
     const [alertMessage, setAlertMessage] = useState('')
     const [expenseDetails, setExpenseDetails] = useState<IExpenseDetails>()
     const [color] = useState<string[]>(['primary', 'secondary', 'error', 'warning', 'info', 'success']);
-    const [expenseDate, setExpenseDate] = useState<Date>()
+    const [expenseDate, setExpenseDate] = useState<string>()
 
     useEffect(() => {
         const getExpenseDetails = async () => {
@@ -28,11 +29,10 @@ export const ViewExpense = () => {
             const expenseIdJson = {
                 id: expenseId
             }
-            const response_exp = await getExpDetailsService(expenseIdJson, setAlert, setAlertMessage)
-            if (response_exp !== false) {
-                setExpenseDetails(response_exp?.data?.expense)
-                setExpenseDate(response_exp?.data?.expense?.expenseDate)
-            }
+            const response_exp: any = await getExpDetailsService(expenseIdJson, setAlert, setAlertMessage)
+            setExpenseDetails(response_exp?.data?.expense)
+            const formattedExpenseDate = new Date(response_exp?.data?.expense?.expenseDate).toDateString() // this conversion is needed at the moment because it doesn't seem possible to use the useState hook to store Date objects
+            setExpenseDate(formattedExpenseDate)
             setLoading(false)
         }
 
@@ -72,16 +72,18 @@ export const ViewExpense = () => {
                         </Grid>
                         <Grid item md={6} xs={12}>
                             <Typography variant='h6'>
-                                {/* TODO :: this date string likely needs foramtting */}
-                                Date : {expenseDate?.toDateString()}
+                                Date : {expenseDate}
                             </Typography>
                         </Grid>
                        
 
                         <Grid item md={6} xs={12}>
                             <Typography variant='h6'>
-                                {/* TODO :: set default symbol based on locale */}                                                {/* TODO :: if zero or null it should replace with string to indicate that not equal split between members, also uneven splits not implemented yet */}
-                                Amount per person: {currencyFind(expenseDetails?.expenseCurrency ?? CurrencyType.USD) + " " + convertToCurrency(expenseDetails?.expensePerMember ?? 0)}
+                                Amount per person:
+                                <CurrencyDisplay
+                                    currencyType={expenseDetails?.expenseCurrency ?? CurrencyType.USD} // TODO :: set default symbol based on locale
+                                    value={expenseDetails?.expensePerMember ?? 0} // TODO :: if zero or null it should replace with string to indicate that not equal split between members, also uneven splits not implemented yet
+                                />
                             </Typography>
                         </Grid>
 
