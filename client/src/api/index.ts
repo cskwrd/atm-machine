@@ -76,12 +76,6 @@ export interface IExpenseDetails {
   expensePerMember: number,
 }
 
-interface IExpenseDetailsResponseType {
-  data: {
-    expense: IExpenseDetails,
-  }
-}
-
 export const getGroupDetails = (formData: number) => API.post<any, IGroupDetailsResponseType, number>('/api/group/v1/view', formData, accessHeader)
 
 export const getGroupExpense = (formData: any) => API.post('/api/expense/v1/group', formData, accessHeader)
