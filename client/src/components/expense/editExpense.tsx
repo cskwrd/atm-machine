@@ -103,7 +103,7 @@ export default function EditExpense() {
         setLoading(false)
     }
     getExpenseDetails()
-}, [formik.values, params.expenseId]);
+}, []);
   return (
     <>
     {loading? <Loading/> : 

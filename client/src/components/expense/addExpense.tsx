@@ -108,7 +108,7 @@ export default function AddExpense() {
       setLoading(false);
     };
     getGroupDetails();
-  }, [formik.values, params.groupId]);
+  }, []);
   
   return (
     <>
