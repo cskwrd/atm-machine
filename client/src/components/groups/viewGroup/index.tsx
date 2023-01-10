@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, Fab, Grid, Link, Stack, styled, Typography } from '@mui/material';
+import { Box, Button, Container, Divider, Fab, Grid, Link, Stack, styled, Theme, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getGroupDetailsService, getGroupExpenseService } from '../../../services/groupServices';
@@ -14,21 +14,21 @@ import { Link as RouterLink } from 'react-router-dom';
 import dataConfig from '../../../config.json';
 import { GroupSettlements } from '../settlement';
 
-const profile = JSON.parse(localStorage.getItem('profile'))
+const profile = JSON.parse(localStorage.getItem('profile') ?? "{}")
 const emailId = profile?.emailId
 var showCount = 10
 export default function ViewGroup() {
     const params = useParams();
     const [loading, setLoading] = useState(true);
-    const [group, setGroup] = useState({});
-    const [groupExpense, setGroupExpense] = useState([]);
+    const [group, setGroup] = useState<any>({});
+    const [groupExpense, setGroupExpense] = useState<any>([]);
     const [alert, setAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
     const [alertExpense, setAlertExpense] = useState(false);
     const [alertExpenseMessage, setAlertExpenseMessage] = useState('');
     const [showAllExp, setShowAllExp] = useState(false);
     const [expFocus, setExpFocus] = useState(false);
-    const [expenses, setExpenses] = useState()
+    const [expenses, setExpenses] = useState<any[]>()
     const [viewSettlement, setViewSettlement] = useState(0)
 
 
@@ -55,7 +55,7 @@ export default function ViewGroup() {
 
     const mdUp = useResponsive('up', 'md');
 
-    const findUserSplit = (split) => {
+    const findUserSplit = (split: any[]) => {
         if (split) {
             split = split[0]
             return split[emailId]
@@ -69,18 +69,19 @@ export default function ViewGroup() {
             const groupIdJson = {
                 id: params.groupId
             }
-            const response_group = await getGroupDetailsService(groupIdJson, setAlert, setAlertMessage)
-            const response_expense = await getGroupExpenseService(groupIdJson, setAlertExpense, setAlertExpenseMessage)
+            const response_group: any = await getGroupDetailsService(groupIdJson, setAlert, setAlertMessage)
+            const response_expense: any = await getGroupExpenseService(groupIdJson, setAlertExpense, setAlertExpenseMessage)
 
             response_group && setGroup(response_group?.data?.group)
             response_expense && setGroupExpense(response_expense?.data)
             response_expense?.data?.expense && setExpenses(response_expense?.data?.expense?.slice(0, 5))
-            if (response_expense?.data?.expense?.length <= 5 || !response_expense)
+            if (response_expense?.data?.expense?.length <= 5 || !response_expense) {
                 setShowAllExp(true)
+            }
             setLoading(false)
         }
         getGroupDetails()
-    }, []);
+    }, [params.groupId]);
 
     const CategoryStyle = styled('span')(({ theme }) => ({
         top: 22,
@@ -105,10 +106,10 @@ export default function ViewGroup() {
             {loading ? <Loading /> :
                 <>
                     <Box sx={{
-                        bgcolor: (theme) => theme.palette['info'].lighter,
+                        bgcolor: (theme) => theme.palette['info'].light,
                         borderRadius: 2,
                         p: 2,
-                        color: (theme) => theme.palette['primary'].darker,
+                        color: (theme) => theme.palette['primary'].dark,
                         pb: 3
                     }}>
 
@@ -127,7 +128,7 @@ export default function ViewGroup() {
 
                         <Typography mt={1} variant="body2" sx={{ color: 'text.secondary' }}>
                             Created by &nbsp;
-                            <Box component={'span'} sx={{ color: (theme) => theme.palette['primary'].darker }}>
+                            <Box component={'span'} sx={{ color: (theme) => theme.palette['primary'].dark }}>
                                 {group?.groupOwner}
                             </Box>
                         </Typography>
@@ -135,10 +136,10 @@ export default function ViewGroup() {
                             <Typography
                                 variant="subtitle2"
                                 sx={{
-                                    bgcolor: (theme) => theme.palette['warning'].lighter,
+                                    bgcolor: (theme) => theme.palette['warning'].light,
                                     p: 1,
                                     borderRadius: 1,
-                                    color: (theme) => theme.palette['warning'].darker
+                                    color: (theme) => theme.palette['warning'].dark
                                 }}>
                                 Category : &nbsp;
                                 {group?.groupCategory}
@@ -189,13 +190,12 @@ export default function ViewGroup() {
                         />
                         <CategoryStyle
                             sx={{
-                                bgcolor: (theme) => theme.palette['primary'].lighter,
+                                bgcolor: (theme) => theme.palette['primary'].light,
                                 py: '6px',
                                 px: '9px'
                             }}
                         >
-                            <Iconify icon={categoryIcon(group?.groupCategory)} color={(theme) => theme.palette['primary'].darker}
-                            />
+                            <Iconify icon={categoryIcon(group?.groupCategory)} color={(theme: Theme) => theme.palette['primary'].dark} sx={undefined} />
                         </CategoryStyle>
                     </Box>
 
@@ -215,7 +215,7 @@ export default function ViewGroup() {
                             <Grid item xs={12} md={4}>
                                 <Stack spacing={2} direction='row'
                                     sx={{
-                                        bgcolor: (theme) => theme.palette['primary'].lighter,
+                                        bgcolor: (theme) => theme.palette['primary'].light,
                                         borderRadius: 2,
                                         p: 3
                                     }}>
@@ -228,7 +228,7 @@ export default function ViewGroup() {
                                             Total expense
                                         </Typography>
                                         <Typography variant="h5"
-                                            sx={{ color: (theme) => theme.palette['primary'].darker }}>
+                                            sx={{ color: (theme) => theme.palette['primary'].dark }}>
                                             {currencyFind(group?.groupCurrency)} {groupExpense.total ? convertToCurrency(groupExpense.total) : 0}
                                         </Typography>
                                     </Box>
@@ -239,7 +239,7 @@ export default function ViewGroup() {
 
                             >
                                 <Stack spacing={2} direction='row' sx={{
-                                    bgcolor: (theme) => theme.palette['success'].lighter,
+                                    bgcolor: (theme) => theme.palette['success'].light,
                                     borderRadius: 2,
                                     p: 3
                                 }} >
@@ -253,7 +253,7 @@ export default function ViewGroup() {
                                             You are owed <br />
                                         </Typography>
                                         <Typography variant="h5"
-                                            sx={{ color: (theme) => theme.palette['success'].darker }}>
+                                            sx={{ color: (theme) => theme.palette['success'].dark }}>
                                             {currencyFind(group?.groupCurrency)} {findUserSplit(group?.split) > 0 ? convertToCurrency(findUserSplit(group?.split)) : 0}
                                         </Typography>
                                     </Box>
@@ -262,7 +262,7 @@ export default function ViewGroup() {
 
                             <Grid item xs={12} md={4}>
                                 <Stack spacing={2} direction='row' sx={{
-                                    bgcolor: (theme) => theme.palette['error'].lighter,
+                                    bgcolor: (theme) => theme.palette['error'].light,
                                     borderRadius: 2,
                                     p: 3
                                 }} >
@@ -276,7 +276,7 @@ export default function ViewGroup() {
                                             You owe <br />
                                         </Typography>
                                         <Typography variant="h5"
-                                            sx={{ color: (theme) => theme.palette['error'].darker }}>
+                                            sx={{ color: (theme) => theme.palette['error'].dark }}>
                                             {currencyFind(group?.groupCurrency)} {findUserSplit(group?.split) < 0 ? convertToCurrency(Math.abs(findUserSplit(group?.split))) : 0}
                                         </Typography>
                                     </Box>
@@ -293,7 +293,7 @@ export default function ViewGroup() {
                             alignItems="center"
                             spacing={1}
                         >
-                            <Typography variant="subtitle" onClick={toggleExpView} noWrap sx={{
+                            <Typography variant="subtitle1" onClick={toggleExpView} noWrap sx={{
                                 cursor: 'pointer', fontSize: 18,
                                 width: '100%',
                                 textAlign: 'center',
@@ -302,7 +302,7 @@ export default function ViewGroup() {
                                     borderRadius: 1,
                                     px: 1,
                                     color: (theme) => theme.palette['info'].dark,
-                                    bgcolor: (theme) => theme.palette['primary'].lighter,
+                                    bgcolor: (theme) => theme.palette['primary'].light,
                                     py: '5px',
                                 }),
                                 ...(!mdUp && {
@@ -312,7 +312,7 @@ export default function ViewGroup() {
                                 Group Expenses
                             </Typography>
 
-                            <Typography variant="subtitle" onClick={toggleSettleView} noWrap sx={{
+                            <Typography variant="subtitle1" onClick={toggleSettleView} noWrap sx={{
                                 cursor: 'pointer', fontSize: 18,
                                 width: '100%',
                                 textAlign: 'center',
@@ -321,7 +321,7 @@ export default function ViewGroup() {
                                     borderRadius: 1,
                                     px: 1,
                                     color: (theme) => theme.palette['info'].dark,
-                                    bgcolor: (theme) => theme.palette['primary'].lighter,
+                                    bgcolor: (theme) => theme.palette['primary'].light,
                                     py: '5px',
                                 }),
                                 ...(!mdUp && {
@@ -331,7 +331,7 @@ export default function ViewGroup() {
                                 Group Balance
                             </Typography>
 
-                            <Typography variant="subtitle" onClick={toggleMySettleView} noWrap sx={{
+                            <Typography variant="subtitle1" onClick={toggleMySettleView} noWrap sx={{
                                 cursor: 'pointer', fontSize: 18,
                                 width: '100%',
                                 textAlign: 'center',
@@ -340,7 +340,7 @@ export default function ViewGroup() {
                                     borderRadius: 1,
                                     px: 1,
                                     color: (theme) => theme.palette['info'].dark,
-                                    bgcolor: (theme) => theme.palette['primary'].lighter,
+                                    bgcolor: (theme) => theme.palette['primary'].light,
                                     py: '5px',
                                 }),
                                 ...(!mdUp && {
@@ -357,7 +357,7 @@ export default function ViewGroup() {
                                 ...(mdUp && { px: 6 })
                             }}
                         >
-                            {viewSettlement == 2 && 
+                            {viewSettlement === 2 && 
                             <Typography>
                                 My Balance - Under development 
                             </Typography>
@@ -380,6 +380,7 @@ export default function ViewGroup() {
                                                 minHeight: '200px'
                                             }}
                                         >
+                                            <AlertBanner showAlert={alertExpense} alertMessage={alertExpenseMessage} severity='error' />
                                             <Typography variant="body2" fontSize={18} textAlign={'center'}>
                                                 No expense present for this group! Record your first group expense now <br />
                                                 <Link component={RouterLink}

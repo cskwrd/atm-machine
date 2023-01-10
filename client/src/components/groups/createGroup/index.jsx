@@ -13,7 +13,7 @@ import configData from '../../../config.json'
 
 export default function Creategroup() {
     const mdUp = useResponsive('up', 'md');
-    const profile = JSON.parse(localStorage.getItem('profile'))
+    const profile = JSON.parse(localStorage.getItem('profile') ?? "{}")
     const currentUser = profile?.emailId
     const [loading, setLoading] = useState(false);
     const [emailList, setEmailList] = useState([]);

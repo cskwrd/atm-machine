@@ -1,15 +1,12 @@
-import { Avatar, Button, Grid, Modal, Stack, Typography } from "@mui/material"
+import { Avatar, Button, Modal, Stack, Typography } from "@mui/material"
 import { Box } from "@mui/system"
-import Iconify from "../../Iconify"
 import useResponsive from '../../../theme/hooks/useResponsive';
-import { convertToCurrency, currencyFind } from '../../../utils/helper';
+import { convertToCurrency, currencyFind, CurrencyType } from '../../../utils/helper';
 import BalanceSettlement from "./balanceSettlement";
 import React from 'react'
 import { useState } from "react";
 import configData from '../../../config.json'
 import gravatarUrl from 'gravatar-url';
-
-
 
 const style = {
     position: 'absolute',
@@ -22,7 +19,12 @@ const style = {
     borderRadius: 1
 };
 
-const SettlementCard = ({ mySettle, currencyType }) => {
+interface ISettlementCardProps {
+  currencyType: CurrencyType;
+  mySettle: any[];
+}
+
+export const SettlementCard: React.FunctionComponent<ISettlementCardProps> = ({ mySettle, currencyType }) => {
     const xsUp = useResponsive('up', 'sm');
     const [reload, setReload] = useState(false)
     const [open, setOpen] = useState(false);
@@ -40,7 +42,7 @@ const SettlementCard = ({ mySettle, currencyType }) => {
         <Stack direction="row" spacing={1} justifyContent="space-evenly"
             alignItems="center"
             sx={{
-                bgcolor: (theme) => theme.palette['warning'].lighter,
+                bgcolor: (theme) => theme.palette['warning'].light,
                 p: 3,
                 borderRadius: 2,
                 boxShadow: 4,
@@ -48,28 +50,28 @@ const SettlementCard = ({ mySettle, currencyType }) => {
         >
             <Avatar src={gravatarUrl(mySettle[0], { size: 200, default: configData.USER_DEFAULT_LOGO_URL })} alt="photoURL" sx={{ width: 56, height: 56 }}/>
             <Stack spacing={0}>
-                <Typography variant='body' noWrap sx={{fontWeight: 600, ...(!xsUp && {fontSize: 12})}}>
+                <Typography variant='body1' noWrap sx={{fontWeight: 600, ...(!xsUp && {fontSize: 12})}}>
                     {mySettle[0].split('@')[0]}
                 </Typography>
                     
-                <Typography variant='body' noWrap sx={{...(!xsUp && {fontSize: 12})}}>
-                   to <Typography variant='subtitle' sx={{fontWeight: 600}}>{mySettle[1].split('@')[0]}</Typography>
+                <Typography variant='body1' noWrap sx={{...(!xsUp && {fontSize: 12})}}>
+                   to <Typography variant='subtitle1' sx={{fontWeight: 600, display: 'block'}} component={'span'}>{mySettle[1].split('@')[0]}</Typography> {/* by default <Typography> uses <h6> for subtitle1 variants, this causes a warning when placed inside a component that uses a <p> tag. override tag type with `component` make it display as block element too*/}
                 </Typography>
 
                 {!xsUp && 
-                <>
-                <Typography variant='body2' sx={{fontSize: 10, mt: '3px', color: (theme) => theme.palette['error'].dark}}>
-                Settlement Amount
-            </Typography>
-            <Typography variant='body2' noWrap
-                sx={{
-                    fontWeight: 900,
-                    color: (theme) => theme.palette['error'].dark,
-                }}
-            >
-                {currencyFind(currencyType)} {convertToCurrency(mySettle[2])}
-            </Typography>
-            </>
+                    <>
+                    <Typography variant='body2' sx={{fontSize: 10, mt: '3px', color: (theme) => theme.palette['error'].dark}}>
+                    Settlement Amount
+                </Typography>
+                <Typography variant='body2' noWrap
+                    sx={{
+                        fontWeight: 900,
+                        color: (theme) => theme.palette['error'].dark,
+                    }}
+                >
+                    {currencyFind(currencyType)} {convertToCurrency(mySettle[2])}
+                </Typography>
+                </>
                 }
             </Stack>
             {xsUp && 

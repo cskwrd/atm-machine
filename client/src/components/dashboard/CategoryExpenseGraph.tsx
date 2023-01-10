@@ -1,23 +1,20 @@
-import { Box, Grid } from "@mui/material"
+import { Box } from "@mui/material"
 import { Typography } from '@mui/material';
-import React, { useEffect } from 'react'
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { getGroupCategoryExpService, getUserCategoryExpService } from '../../services/expenseServices';
+import { useEffect, useState } from 'react'
+import { getUserCategoryExpService } from '../../services/expenseServices';
 import AlertBanner from '../AlertBanner';
 import Loading from '../loading';
 import { Doughnut } from "react-chartjs-2";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import 'chart.js/auto'
-import { convertToCurrency, currencyFind } from '../../utils/helper';
+import { convertToCurrency } from '../../utils/helper';
 export const CategoryExpenseChart = () => {
 
-    const params = useParams();
     const [alert, setAlert] = useState(false)
-    const [alertMessage, setAlertMessage] = useState()
+    const [alertMessage, setAlertMessage] = useState('')
     const [loading, setLoading] = useState(true)
-    const [categoryExp, setCategoryExp] = useState()
-    const profile = JSON.parse(localStorage.getItem("profile"))
+    const [categoryExp, setCategoryExp] = useState<any[]>()
+    const profile = JSON.parse(localStorage.getItem("profile") ?? "{}")
 
     const data = {
         labels: categoryExp?.map(category => (category._id)),
@@ -40,25 +37,6 @@ export const CategoryExpenseChart = () => {
         ]
     }
 
-    const options = {
-        maintainAspectRatio: false,
-        plugins: {   
-            datalabels: {
-                display:false,
-                formatter: (value) => {
-                  return convertToCurrency(value) ;
-                }
-              },
-            legend: {
-                display: true,
-                position: 'bottom',
-                labels: {
-                    padding: 10
-                },
-            },
-        }
-    };
-
 
     useEffect(() => {
         const getGroupCategoryExpense = async () => {
@@ -66,14 +44,13 @@ export const CategoryExpenseChart = () => {
             const userIdJson = {
                 user: profile.emailId
             }
-            const category_exp =
-                await getUserCategoryExpService(userIdJson, setAlert, setAlertMessage)
+            const category_exp: any = await getUserCategoryExpService(userIdJson, setAlert, setAlertMessage)
             setCategoryExp(category_exp.data.data)
             setLoading(false)
         }
         getGroupCategoryExpense()
 
-    }, [])
+    }, [profile.emailId])
 
     return (
         <>
@@ -89,7 +66,24 @@ export const CategoryExpenseChart = () => {
             </Typography>
                     <AlertBanner showAlert={alert} alertMessage={alertMessage} severity='error' />
                     <Box height={500}>
-                    <Doughnut data={data} options={options} plugins={[ChartDataLabels]}/>
+                    <Doughnut data={data} options={{
+                        maintainAspectRatio: false,
+                        plugins: {   
+                            datalabels: {
+                                display:false,
+                                formatter: (value: number) => {
+                                return convertToCurrency(value) ;
+                                }
+                            },
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    padding: 10
+                                },
+                            },
+                        }
+                    }} plugins={[ChartDataLabels as any]}/>
                     </Box>                   
         </Box>}
         </>

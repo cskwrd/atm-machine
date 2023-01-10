@@ -12,10 +12,10 @@ import useResponsive from '../../theme/hooks/useResponsive';
 export const GroupExpenseChart = () => {
     const mdUp = useResponsive('up', 'md');
     const [loading, setLoading] = useState(true)
-    const [groupExp, setGroupExp] = useState()
+    const [groupExp, setGroupExp] = useState<any[]>()
     const [alert, setAlert] = useState(false)
-    const [alertMessage, setAlertMessage] = useState()
-    const profile = JSON.parse(localStorage.getItem("profile"))
+    const [alertMessage, setAlertMessage] = useState('')
+    const profile = JSON.parse(localStorage.getItem("profile") ?? "{}")
 
     const data = {
         labels: groupExp?.map(group => (group.groupName)),
@@ -37,40 +37,20 @@ export const GroupExpenseChart = () => {
             }
         ]
     }
-
-    const options = {
-        maintainAspectRatio: false,
-        plugins: {   
-            datalabels: {
-                display:false,
-                formatter: (value) => {
-                  return convertToCurrency(value) ;
-                }
-              },
-            legend: {
-                display: true,
-                position: mdUp? 'right' : 'bottom',
-                labels: {
-                    padding: 10
-                },
-            },
-        }
-    };
+    
     useEffect(() => {
         const getGroupExpense = async () => {
             setLoading(true)
             const userIdJson = {
-                user: profile.emailId
+                emailId: profile.emailId
             }
-            const group_exp =
-                await getUserGroupsService(profile, setAlert, setAlertMessage)
+            const group_exp: any = await getUserGroupsService(userIdJson, setAlert, setAlertMessage)
             setGroupExp(group_exp.data.groups)
             setLoading(false)
-            console.log(group_exp.data.groups)
         }
         getGroupExpense()
 
-    }, [])
+    }, [profile.emailId])
 
     return (
         <>{loading? <Loading/> : 
@@ -85,7 +65,24 @@ export const GroupExpenseChart = () => {
             </Typography>
             <AlertBanner showAlert={alert} alertMessage={alertMessage} severity = 'error' />
             <Box height={500}>
-            <Pie data={data} options={options} plugins={[ChartDataLabels]}/>
+            <Pie data={data} options={{
+                maintainAspectRatio: false,
+                plugins: {   
+                    datalabels: {
+                        display:false,
+                        formatter: (value: number) => {
+                        return convertToCurrency(value) ;
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: mdUp? 'right' : 'bottom',
+                        labels: {
+                            padding: 10
+                        },
+                    },
+                }
+            }} plugins={[ChartDataLabels as any]}/>
             </Box>
         </Box>}
         </>

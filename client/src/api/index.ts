@@ -57,23 +57,24 @@ interface IGroupDetailsResponseType {
     group: {
       groupCurrency: CurrencyType,
       groupMembers: string[],
+      split: any[],
     }
   }
 }
 
 export interface IExpenseDetails {
-  groupId: any,
-  expenseName: string,
-  expenseDescription: string,
-  expenseOwner: string,
-  expenseMembers: string[],
-  expenseAmount: number,
-  expenseCategory: string,
-  expenseDate: Date,
-  expenseType: string,
-  _id: string,
-  expenseCurrency: CurrencyType,
-  expensePerMember: number,
+  groupId: any;
+  expenseName: string;
+  expenseDescription: string;
+  expenseOwner: string;
+  expenseMembers: string[];
+  expenseAmount: number;
+  expenseCategory: string;
+  expenseDate: Date;
+  expenseType: string;
+  _id: string;
+  expenseCurrency: CurrencyType;
+  expensePerMember: number;
 }
 
 export const getGroupDetails = (formData: number) => API.post<any, IGroupDetailsResponseType, number>('/api/group/v1/view', formData, accessHeader)

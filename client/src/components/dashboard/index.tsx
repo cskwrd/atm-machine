@@ -11,30 +11,30 @@ import { GroupExpenseChart } from "./GroupExpenseChart"
 import { RecentTransactions } from "./RecentTransactions"
 import { SummaryCards } from "./summaryCards"
 import { WelcomeMessage } from "./welcomeMessage"
-import { Link as RouterLink } from 'react-router-dom';
 import configData from '../../config.json'
 import AlertBanner from "../AlertBanner"
 
 
 export default function Dashboard() {
     const [loading, setLoading] = useState(true)
-    const profile = JSON.parse(localStorage.getItem("profile"))
     const [alert, setAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-    const [userExp, setUserExp] = useState()
+    const [userExp, setUserExp] = useState<any>()
     const [newUser, setNewUser] = useState(false)
 
     useEffect(() => {
         const getUserDetails = async () => {
+            const profile = JSON.parse(localStorage.getItem("profile") ?? "{}")
             setLoading(true);
             const userIdJson = {
                 user: profile.emailId
             }
-            const response_expense = await getUserExpenseService(userIdJson, setAlert, setAlertMessage)
+            const response_expense: any = await getUserExpenseService(userIdJson, setAlert, setAlertMessage)
             setUserExp(response_expense.data);
-            const response_group = await getUserGroupsService(profile)
-            if (response_group.data.groups.length == 0)
+            const response_group: any = await getUserGroupsService(profile)
+            if (response_group.data.groups.length === 0) {
                 setNewUser(true)
+            }
             setLoading(false)
 
         }
@@ -66,10 +66,10 @@ export default function Dashboard() {
                                         }}
 
                                     >
+                                        <AlertBanner showAlert={alert} alertMessage={alertMessage} severity = 'error' />
                                         <Typography variant="body2" fontSize={18} textAlign={'center'}>
                                             Seems to be new here! Create your first group and add expenses <br />
-                                            <Link component={RouterLink}
-                                                to={configData.CREATE_GROUP_URL}>
+                                            <Link to={configData.CREATE_GROUP_URL}>
                                                 Create Group
                                             </Link>
                                         </Typography>
@@ -87,9 +87,6 @@ export default function Dashboard() {
                                     <Grid item xs={12} md={12}>
                                         <GroupExpenseChart />
                                     </Grid>
-                                    {/* <Grid item xs={12} md={6}>
-                                <CategoryExpenseChart />
-                            </Grid> */}
                                 </>
                             }
                         </Grid>

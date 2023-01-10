@@ -1,26 +1,31 @@
 import { DesktopDatePicker, LoadingButton, LocalizationProvider, MobileDatePicker } from "@mui/lab";
-import { Button, Grid, InputAdornment, TextField, Typography } from "@mui/material"
+import { Button, Grid, InputAdornment, TextField, TextFieldProps, Theme, Typography } from "@mui/material"
 import useResponsive from '../../../theme/hooks/useResponsive';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import * as Yup from 'yup';
 import { Form, FormikProvider, useFormik } from 'formik';
-import { currencyFind } from "../../../utils/helper";
+import { currencyFind, CurrencyType } from "../../../utils/helper";
 import Loading from "../../loading";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { settlementService } from "../../../services/groupServices";
 import AlertBanner from "../../AlertBanner";
-import { Box } from "@mui/system";
 import Iconify from "../../Iconify";
 
+interface IBalanceSettlementProps {
+  currencyType: CurrencyType;
+  settleTo: string;
+  settleFrom: string;
+  amount: number;
+  handleClose: () => void;
+  setReload: (reload: boolean) => void;
+}
 
-
-
-const BalanceSettlement = ({ currencyType, settleTo, settleFrom, amount, handleClose, setReload }) => {
+export const BalanceSettlement: React.FunctionComponent<IBalanceSettlementProps> = ({ currencyType, settleTo, settleFrom, amount, handleClose, setReload }) => {
   const mdUp = useResponsive('up', 'md');
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(false)
-  const [alertMessage, setAlertMessage] = useState()
+  const [alertMessage, setAlertMessage] = useState('')
   const [settleSuccess, setSettleSuccess] = useState(false)
   const params = useParams();
 
@@ -43,11 +48,11 @@ const BalanceSettlement = ({ currencyType, settleTo, settleFrom, amount, handleC
     onSubmit: async () => {
      
       setLoading(true)
-      const response = await settlementService(values, setAlert, setAlertMessage)
+      const response: any = await settlementService(values, setAlert, setAlertMessage)
     
       if(response?.data?.status === "Success"){
-      setSettleSuccess(true)
-      setReload(true)
+        setSettleSuccess(true)
+        setReload(true)
       }
       setLoading(false)
     },
@@ -70,7 +75,7 @@ const BalanceSettlement = ({ currencyType, settleTo, settleFrom, amount, handleC
         textAlign: 'center',
         minHeight: '200px' }}
     >
-      <Iconify icon="icon-park-twotone:success" sx={{color: (theme) => theme.palette['success'].dark, fontSize: 100}} />
+      <Iconify icon="icon-park-twotone:success" sx={{color: (theme: Theme) => theme.palette['success'].dark, fontSize: 100}} />
       <Typography variant="h4" textAlign={'center'} mt={2}>
           Settlement Successfull !
       </Typography>
@@ -88,7 +93,6 @@ const BalanceSettlement = ({ currencyType, settleTo, settleFrom, amount, handleC
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
-                name="settleTo"
                 id="outlined-basic"
                 type="text"
                 label="Settlement to"
@@ -102,7 +106,6 @@ const BalanceSettlement = ({ currencyType, settleTo, settleFrom, amount, handleC
             <Grid item xs={12} md={6}>
               <TextField
                 fullWidth
-                name="settleFrom"
                 id="outlined-basic"
                 type="text"
                 label="Settlement from"
@@ -120,10 +123,10 @@ const BalanceSettlement = ({ currencyType, settleTo, settleFrom, amount, handleC
                     name="settleDate"
                     label="Settlement Date"
                     inputFormat="dd/MM/yyyy"
-                    renderInput={(params) => <TextField {...params} sx={{ width: '100%' }}
+                    renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => <TextField {...params} sx={{ width: '100%' }}
                     />}
                     value={formik.values.settleDate}
-                    onChange={(value) => {
+                    onChange={(value: string) => {
                       formik.setFieldValue('settleDate', Date.parse(value));
                     }}
 
@@ -133,10 +136,10 @@ const BalanceSettlement = ({ currencyType, settleTo, settleFrom, amount, handleC
                     name="settleDate"
                     label="Settlement Date"
                     inputFormat="dd/MM/yyyy"
-                    renderInput={(params) => <TextField {...params} sx={{ width: '100%' }}
+                    renderInput={(params: JSX.IntrinsicAttributes & TextFieldProps) => <TextField {...params} sx={{ width: '100%' }}
                     />}
                     value={formik.values.settleDate}
-                    onChange={(value) => {
+                    onChange={(value: string) => {
                       formik.setFieldValue('settleDate', Date.parse(value));
                     }}
 
@@ -147,12 +150,10 @@ const BalanceSettlement = ({ currencyType, settleTo, settleFrom, amount, handleC
 
               <TextField
                 fullWidth
-                name="settleAmount"
                 id="outlined-basic"
                 type="number"
                 label="Settlement Amount"
                 variant="outlined"
-                min={5}
                 {...getFieldProps('settleAmount')}
                 InputProps={{
                   startAdornment: (

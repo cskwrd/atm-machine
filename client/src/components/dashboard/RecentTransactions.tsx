@@ -11,9 +11,9 @@ import Loading from '../loading'
 export const RecentTransactions = () => {
     const [loading, setLoading] = useState(true)
     const [alert, setAlert] = useState(false)
-    const [alertMessage, setAlertMessage] = useState()
-    const [recentExp, setRecentExp] = useState()
-    const profile = JSON.parse(localStorage.getItem('profile'))
+    const [alertMessage, setAlertMessage] = useState('')
+    const [recentExp, setRecentExp] = useState<any[]>()
+    const profile = JSON.parse(localStorage.getItem('profile') ?? "{}")
     useEffect(() => {
         const getRecentExp = async () => {
             setLoading(true)
@@ -28,7 +28,7 @@ export const RecentTransactions = () => {
         getRecentExp()
 
 
-    }, [])
+    }, [profile.emailId])
 
     return (
         <>
@@ -40,7 +40,7 @@ export const RecentTransactions = () => {
         }}>
             <AlertBanner showAlert={alert} alertMessage={alertMessage} severity='error' />
             <Typography variant="h6" p={2} >
-                Your Recent transactions,
+                Your Recent Transactions
             </Typography>
             {recentExp?.map(myExpense => (
 

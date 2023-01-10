@@ -34,7 +34,7 @@ const MainStyle = styled('div')(({ theme }) => ({
 
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
-  const user = JSON.parse(localStorage.getItem('profile'))
+  const user = JSON.parse(localStorage.getItem('profile') ?? "{}")
 
  useEffect(() => {
    //If user logged in the page is auto directed to dashboard

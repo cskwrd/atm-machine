@@ -35,7 +35,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
 
-  const user = JSON.parse(localStorage.getItem('profile'))
+  const user = JSON.parse(localStorage.getItem('profile') ?? "{}")
 
 
   const anchorRef = useRef(null);

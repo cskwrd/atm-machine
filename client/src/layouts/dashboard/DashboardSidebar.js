@@ -45,7 +45,7 @@ DashboardSidebar.propTypes = {
 };
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
-  const user = JSON.parse(localStorage.getItem('profile'))
+  const user = JSON.parse(localStorage.getItem('profile') ?? "{}")
 
   const { pathname } = useLocation();
 

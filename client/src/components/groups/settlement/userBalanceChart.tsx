@@ -10,14 +10,14 @@ import { Bar } from "react-chartjs-2"
 import useResponsive from "../../../theme/hooks/useResponsive"
 
 
-const UserBalanceChart = () => {
+export const UserBalanceChart: React.FunctionComponent = () => {
     const params = useParams();
     const mdUp = useResponsive('up', 'md');
     const [loading, setLoading] = useState(false)
-    const [graphData, setGraphData] = useState([])
-    const [graphLabel, setGraphLabel] = useState([])
+    const [graphData, setGraphData] = useState<number[]>([])
+    const [graphLabel, setGraphLabel] = useState<string[]>([])
     const [alert, setAlert] = useState(false)
-    const [alertMessage, setAlertMessage] = useState()
+    const [alertMessage, setAlertMessage] = useState('')
 
 
     const data = {
@@ -32,46 +32,28 @@ const UserBalanceChart = () => {
         ]
     }
 
-    const options = {
-        scales: {
-            x: {
-                ticks: {
-                    display: mdUp
-                },
-            }
-        },
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false,
-            },
-        }
-    }
-
     useEffect(() => {
         const getGroupDetails = async () => {
             setLoading(true)
             const groupIdJson = {
                 id: params.groupId
             }
-            const response_group = await getGroupDetailsService(groupIdJson, setAlert, setAlertMessage)
-            let split = Object.entries(response_group?.data?.group?.split[0])
-            split.map((mySplit, index) => {
-                if (mySplit[1] < 0) {
-                    if (index === 0) {
-                         setGraphData([Math.abs(mySplit[1])])
-                         setGraphLabel([ mySplit[0]])
-                    } else {
-                        setGraphData(current => [...current, Math.abs(mySplit[1])])
-                        setGraphLabel(current => [...current, mySplit[0]])
-                    }
+            const response_group: any = await getGroupDetailsService(groupIdJson, setAlert, setAlertMessage)
+            let splits: any[] = Object.entries(response_group?.data?.group?.split[0])
+            const data: number[] = []
+            const labels: string[] = []
+            splits.forEach((splitData) => {
+                if (splitData[1] < 0) {
+                    data.push(Math.abs(splitData[1]))
+                    labels.push(splitData[0])
                 }
-
             })
+            setGraphData(data)
+            setGraphLabel(labels)
             setLoading(false)
         }
         getGroupDetails()
-    }, [])
+    }, [params.groupId])
 
     return (
         <>
@@ -79,7 +61,21 @@ const UserBalanceChart = () => {
                 <Container sx={{ my: 6 }}>
                     <AlertBanner showAlert={alert} alertMessage={alertMessage} severity={'error'} />
                     <Box height={350} my={2}>
-                        <Bar data={data} options={options} />
+                        <Bar data={data} options={{
+                            scales: {
+                                x: {
+                                    ticks: {
+                                        display: mdUp
+                                    },
+                                }
+                            },
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                },
+                            }
+                        }} />
                     </Box>
                 </Container>}
         </>

@@ -71,19 +71,19 @@ export default function GroupCards({ title, description, groupMembers, share, cu
       />
       <CategoryStyle
         sx={{
-          bgcolor: (theme) => theme.palette[color].lighter,
+          bgcolor: (theme) => theme.palette[color].light,
           py: '6px',
           px: '9px'
         }}
       >
-        <Iconify icon={categoryIcon(groupCategory)} color={(theme) => theme.palette[color].darker}
+        <Iconify icon={categoryIcon(groupCategory)} color={(theme) => theme.palette[color].dark}
         />
       </CategoryStyle>
 
       <Box pt={6} px={2} pb={3}
         sx={{
-          bgcolor: (theme) => theme.palette[color].lighter,
-          color: (theme) => theme.palette[color].darker
+          bgcolor: (theme) => theme.palette[color].light,
+          color: (theme) => theme.palette[color].dark
         }}
       >
         <Typography noWrap variant="h3" fontSize={30} sx={{ opacity: 0.72 }}>
@@ -101,19 +101,19 @@ export default function GroupCards({ title, description, groupMembers, share, cu
       >
         <Stack direction="row" spacing={2} p={1} mt={1}>
           <Typography sx={{
-            bgcolor: isGroupActive ? (theme) => theme.palette['error'].lighter : (theme) => theme.palette['success'].lighter,
+            bgcolor: isGroupActive ? (theme) => theme.palette['error'].light : (theme) => theme.palette['success'].light,
             p: 1,
             borderRadius: 1,
-            color: isGroupActive ? (theme) => theme.palette['error'].darker : (theme) => theme.palette['success'].darker
+            color: isGroupActive ? (theme) => theme.palette['error'].dark : (theme) => theme.palette['success'].dark
           }}>
             {isGroupActive ? (<b>Not Settled</b>) : (<b>Settled</b>)}
           </Typography>
 
           <Typography sx={{
-            bgcolor: share < 0 ? (theme) => theme.palette['error'].lighter : (theme) => theme.palette['success'].lighter,
+            bgcolor: share < 0 ? (theme) => theme.palette['error'].light : (theme) => theme.palette['success'].light,
             p: 1,
             borderRadius: 1,
-            color: share < 0 ? (theme) => theme.palette['error'].darker : (theme) => theme.palette['success'].darker
+            color: share < 0 ? (theme) => theme.palette['error'].dark : (theme) => theme.palette['success'].dark
           }}>
             <b> {share < 0? <>You owe</> : <>You are owed</>} : &nbsp;
               {currencyFind(currencyType)} {convertToCurrency(Math.abs(Math.floor(share)))}</b>
@@ -126,10 +126,10 @@ export default function GroupCards({ title, description, groupMembers, share, cu
                 Category {" "}
               </Typography>
               <Box sx={{
-                bgcolor: (theme) => theme.palette['warning'].lighter,
+                bgcolor: (theme) => theme.palette['warning'].light,
                 p: 1,
                 borderRadius: 1,
-                color: (theme) => theme.palette['warning'].darker,
+                color: (theme) => theme.palette['warning'].dark,
               }}>
                 {groupCategory}
               </Box>

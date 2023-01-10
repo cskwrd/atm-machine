@@ -7,8 +7,8 @@ export const WelcomeMessage = () => {
         <Box sx={{
             boxShadow: 5,
             p: 5,
-            bgcolor: (theme) => theme.palette['primary'].lighter,
-            color: (theme) => theme.palette['primary'].darker,
+            bgcolor: (theme) => theme.palette['primary'].light,
+            color: (theme) => theme.palette['primary'].dark,
             borderRadius: 2
         }}>
             <Grid container spacing={2} justifyContent={'center'}

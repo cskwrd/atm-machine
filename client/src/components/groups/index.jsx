@@ -7,7 +7,7 @@ import GroupCards from "./groupCards";
 import { Link as RouterLink } from 'react-router-dom';
 import dataConfig from '../../config.json';
 
-const profile = JSON.parse(localStorage.getItem('profile'))
+const profile = JSON.parse(localStorage.getItem('profile') ?? "{}")
 const emailId = profile?.emailId
 
 export default function Group() {
@@ -88,7 +88,7 @@ export default function Group() {
                     borderRadius: 2,
                     backgroundImage: (theme) =>
                       `linear-gradient(169deg, ${alpha(theme.palette['primary'].light, 0.6)} 0%, ${alpha(
-                        theme.palette['primary'].darker,
+                        theme.palette['primary'].dark,
                         0.55
                       )} 70%)`,
                     minHeight: 310

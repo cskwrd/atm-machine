@@ -1,11 +1,13 @@
-import { appendOwnerState } from '@mui/base'
 import * as api from '../api/index'
 
-export const getUserGroupsService = async (data) =>{
+export const getUserGroupsService = async (data, setAlert, setAlertMessage) =>{
     try{
         const userGroups = await api.getUserGroups(data)
         return userGroups
     }catch(err){
+        setAlert(true)
+        err.response.status === 400 || err.response.status === 401
+        ? setAlertMessage(err.response.data.message) : setAlertMessage("Oops! Something went worng")
         return false
     }
 }
