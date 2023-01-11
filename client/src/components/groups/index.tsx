@@ -23,7 +23,7 @@ export default function Group() {
       setLoading(false)
     }
     getUserGroups()
-  });
+  }, []);
 
   const checkActive = (split: any) => {
     for (var key in split) {
