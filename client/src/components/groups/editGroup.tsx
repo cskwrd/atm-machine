@@ -1,17 +1,20 @@
 import { LoadingButton } from '@mui/lab';
-import { Box, Chip, Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material'
+import { Box, Button, Chip, Container, FormControl, FormHelperText, Grid, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from '@mui/material'
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
-import { getEmailList } from '../../../services/auth';
-import Loading from '../../loading';
-import useResponsive from '../../../theme/hooks/useResponsive';
-import { createGroupService } from '../../../services/groupServices';
-import AlertBanner from '../../AlertBanner';
-import configData from '../../../config.json'
+import { getEmailList } from '../../services/auth';
+import Loading from '../loading';
+import useResponsive from '../../theme/hooks/useResponsive';
+import {  editGroupService, getGroupDetailsService } from '../../services/groupServices';
+import AlertBanner from '../AlertBanner';
+import configData from '../../config.json'
+import {  useNavigate, useParams } from 'react-router-dom';
 
 
-export default function Creategroup() {
+export const EditGroup = () => {
+    const navigate = useNavigate();  
+    const params = useParams();
     const mdUp = useResponsive('up', 'md');
     const profile = JSON.parse(localStorage.getItem('profile') ?? "{}")
     const currentUser = profile?.emailId
@@ -19,7 +22,8 @@ export default function Creategroup() {
     const [emailList, setEmailList] = useState([]);
     const [alert, setAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-   
+
+
     //Formink schema 
     const groupSchema = Yup.object().shape({
         groupName: Yup.string().required('Group name is required'),
@@ -34,14 +38,14 @@ export default function Creategroup() {
             groupDescription: '',
             groupCurrency: '',
             groupCategory: '',
+            groupOwner: '',
             groupMembers: [currentUser],
-            groupOwner: currentUser
-            
+            id: params.groupId
         },
         validationSchema: groupSchema,
         onSubmit: async () => {
-            const create_response = await createGroupService(values, setAlert, setAlertMessage)
-            window.location = configData.VIEW_GROUP_URL + create_response.data.Id
+            const create_response = await editGroupService(values, setAlert, setAlertMessage)
+            create_response && (window.location.href = configData.VIEW_GROUP_URL + params.groupId)
         },
     });
 
@@ -59,20 +63,32 @@ export default function Creategroup() {
     };
 
 
-    
+
 
     useEffect(() => {
         const getEmails = async () => {
             setLoading(true)
-            const response = await getEmailList()
+            const response: any = await getEmailList()
             var list = response.data.user
             list.indexOf(currentUser) > -1 && list.splice(list.indexOf(currentUser), 1)
             setEmailList(list)
+            const groupIdJson = {
+                id: params.groupId
+            }
+            const response_group: any = await getGroupDetailsService(groupIdJson, setAlert, setAlertMessage)
+            const groupDetails = response_group?.data?.group
+            formik.values.groupName = groupDetails?.groupName
+            formik.values.groupDescription = groupDetails?.groupDescription
+            formik.values.groupMembers = groupDetails?.groupMembers
+            formik.values.groupOwner = groupDetails?.groupOwner
+            formik.values.groupCurrency = groupDetails?.groupCurrency
+            formik.values.groupCategory = groupDetails?.groupCategory
+
             setLoading(false)
         }
         getEmails()
-        
-        
+
+
     }, []);
 
     return (
@@ -80,16 +96,15 @@ export default function Creategroup() {
             {loading ? <Loading /> :
                 <>
                     <Typography variant="h4" pb={2} mb={3}>
-                        Create New group
+                        Edit Group
                     </Typography>
-                    <AlertBanner showAlert={alert} alertMessage={alertMessage} severity = 'error' />
+                    <AlertBanner showAlert={alert} alertMessage={alertMessage} severity='error' />
                     <FormikProvider value={formik}>
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                             <Grid container spacing={3} sx={{ maxWidth: 800 }}>
                                 <Grid item xs={12} >
                                     <TextField fullWidth
                                         type="text"
-                                        name="groupName"
                                         id="outlined-basic"
                                         label="Group Name"
                                         variant="outlined"
@@ -103,7 +118,6 @@ export default function Creategroup() {
                                         multiline
                                         rows={4}
                                         fullWidth
-                                        name="groupDescription"
                                         id="outlined-basic"
                                         label="Group Description"
                                         variant="outlined"
@@ -123,7 +137,7 @@ export default function Creategroup() {
                                             input={<OutlinedInput id="group-members" label="Group Members" />}
                                             renderValue={(selected) => (
                                                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                                    {selected.map((value) => (
+                                                    {selected.map((value: string) => (
                                                         <Chip key={value} label={value} />
                                                     ))}
                                                 </Box>
@@ -148,7 +162,6 @@ export default function Creategroup() {
                                     >
                                         <InputLabel id="demo-simple-select-label">Currency</InputLabel>
                                         <Select
-                                            name='groupCurrency'
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
                                             label="Currency"
@@ -168,7 +181,6 @@ export default function Creategroup() {
                                     >
                                         <InputLabel id="group-category">Category</InputLabel>
                                         <Select
-                                            name='groupCategory'
                                             labelId="group-category"
                                             id="demo-simple-select"
                                             label="Category"
@@ -185,11 +197,15 @@ export default function Creategroup() {
                                     </FormControl>
                                 </Grid>
 
-                                {mdUp && <Grid item xs={0} md={9}/> }
-                                                  
+                                {mdUp && <Grid item xs={0} md={6} />}
+                                <Grid item xs={6} md={3}>
+                                    <Button fullWidth size="large" variant="outlined" onClick={() => navigate(-1)}>
+                                        Cancel
+                                    </Button>
+                                </Grid>
                                 <Grid item xs={6} md={3}>
                                     <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-                                        Create Group
+                                        Edit Group
                                     </LoadingButton>
                                 </Grid>
                             </Grid>

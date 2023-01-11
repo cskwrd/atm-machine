@@ -1,9 +1,9 @@
-import { Grid, CardActionArea, CardContent, CardMedia, Typography, Container, Card, Box, Link, alpha, Fab } from "@mui/material";
+import { Grid, Typography, Container, Card, Link, alpha, Fab } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUserGroupsService } from "../../services/groupServices";
 import Iconify from "../Iconify";
 import Loading from "../loading";
-import GroupCards from "./groupCards";
+import { GroupCards } from "./groupCards";
 import { Link as RouterLink } from 'react-router-dom';
 import dataConfig from '../../config.json';
 
@@ -18,17 +18,17 @@ export default function Group() {
   useEffect(() => {
     const getUserGroups = async () => {
       setLoading(true)
-      const response_group = await getUserGroupsService(profile)
+      const response_group: any = await getUserGroupsService(profile)
       setGroup(response_group.data.groups)
       setLoading(false)
     }
     getUserGroups()
-  }, []);
+  });
 
-  const checkActive = (split) => {
+  const checkActive = (split: any) => {
     for (var key in split) {
       if (split.hasOwnProperty(key)) {
-        if (Math.round(split[key]) != 0)
+        if (Math.round(split[key]) !== 0)
           return true
       }
     }
@@ -57,22 +57,21 @@ export default function Group() {
           </Typography>
           <Grid container spacing={4} >
 
-            {group?.map(myGroup => (
+            {group?.map((myGroup: any) => (
               <Grid item xs={12} md={6} lg={6} key={myGroup?._id}>
                 <Link component={RouterLink}
                 to={dataConfig.VIEW_GROUP_URL+myGroup?._id}
                 sx={{ textDecoration: 'none' }}
               >
                 <GroupCards
-                  title={myGroup?.groupName}
-                  description={myGroup?.groupDescription}
-                  groupMembers={myGroup?.groupMembers}
-                  share={myGroup?.split[0][emailId]}
-                  currencyType={myGroup?.groupCurrency}
-                  groupCategory={myGroup?.groupCategory}
-                  isGroupActive={checkActive(myGroup?.split[0])}
-                  color={color[Math.floor(Math.random() * 5)]}
-                />
+                    title={myGroup?.groupName}
+                    description={myGroup?.groupDescription}
+                    groupMembers={myGroup?.groupMembers}
+                    share={myGroup?.split[0][emailId]}
+                    currencyType={myGroup?.groupCurrency}
+                    groupCategory={myGroup?.groupCategory}
+                    isGroupActive={checkActive(myGroup?.split[0])}
+                    color={color[Math.floor(Math.random() * 5)]} icon={""} sx={undefined}                />
                 </Link>
               </Grid>
             ))}

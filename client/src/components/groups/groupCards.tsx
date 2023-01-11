@@ -1,13 +1,13 @@
 // @mui
-import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
 import { Card, CardContent, Typography, Box, AvatarGroup, Avatar, Stack, Grid } from '@mui/material';
-import { convertToCurrency, currencyFind, categoryIcon } from '../../utils/helper';
+import { convertToCurrency, currencyFind, categoryIcon, GroupCategories, CurrencyType } from '../../utils/helper';
 // utils
 // components
 import Iconify from '../Iconify';
 import gravatarUrl from 'gravatar-url';
 import configData from '../../config.json'
+import { Theme } from '@mui/system';
 
 
 // ----------------------------------------------------------------------
@@ -27,21 +27,20 @@ const CategoryStyle = styled('div')(({ theme }) => ({
   borderRadius: 50
 }));
 
+interface IGroupCardsProps {
+  color: string;
+  icon: string;
+  title: string;
+  description: string;
+  groupMembers: string[];
+  share: number;
+  currencyType: CurrencyType;
+  groupCategory: GroupCategories;
+  isGroupActive: boolean;
+  sx: any;
+}
 
-GroupCards.propTypes = {
-  color: PropTypes.string,
-  icon: PropTypes.string,
-  title: PropTypes.string,
-  description: PropTypes.string,
-  groupMembers: PropTypes.array,
-  share: PropTypes.number,
-  currencyType: PropTypes.string,
-  groupCategory: PropTypes.string,
-  isGroupActive: PropTypes.bool,
-  sx: PropTypes.object,
-};
-
-export default function GroupCards({ title, description, groupMembers, share, currencyType, groupCategory, isGroupActive, icon, color = 'primary', sx, ...other }) {
+export const GroupCards: React.FunctionComponent<IGroupCardsProps> = ({ title, description, groupMembers, share, currencyType, groupCategory, isGroupActive, icon, color = 'primary', sx, ...other }) => {
   return (
     <Card
       sx={{
@@ -71,19 +70,18 @@ export default function GroupCards({ title, description, groupMembers, share, cu
       />
       <CategoryStyle
         sx={{
-          bgcolor: (theme) => theme.palette[color].light,
+          bgcolor: (theme: Theme) => theme.palette[color].light,
           py: '6px',
           px: '9px'
         }}
       >
-        <Iconify icon={categoryIcon(groupCategory)} color={(theme) => theme.palette[color].dark}
-        />
+        <Iconify icon={categoryIcon(groupCategory)} color={(theme: Theme) => theme.palette[color].dark} sx={undefined} />
       </CategoryStyle>
 
       <Box pt={6} px={2} pb={3}
         sx={{
-          bgcolor: (theme) => theme.palette[color].light,
-          color: (theme) => theme.palette[color].dark
+          bgcolor: (theme: Theme) => theme.palette[color].light,
+          color: (theme: Theme) => theme.palette[color].dark
         }}
       >
         <Typography noWrap variant="h3" fontSize={30} sx={{ opacity: 0.72 }}>
@@ -137,7 +135,7 @@ export default function GroupCards({ title, description, groupMembers, share, cu
           </Grid>
           <Grid item md={6} xs={12}>
             <AvatarGroup max={3} sx={{ width: '100%' }}>
-              {groupMembers.map(member => (
+              {groupMembers.map((member: string) => (
                 <Avatar key={member} alt={member.toUpperCase()} src={gravatarUrl(member, { size: 350 ,default: configData.USER_DEFAULT_LOGO_URL})} />
               ))}
             </AvatarGroup>
