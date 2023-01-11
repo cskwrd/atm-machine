@@ -1,6 +1,6 @@
-// ----------------------------------------------------------------------
+import { Theme } from "@mui/material";
 
-export default function Lists(theme) {
+export default function Lists(theme: Theme) {
   return {
     MuiListItemIcon: {
       styleOverrides: {

@@ -4,14 +4,15 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 // ----------------------------------------------------------------------
 
-export default function useResponsive(query, key, start, end) {
+// export default function useResponsive(query: any, key: any, start: any, end: any) {
+  export default function useResponsive(query: any, key: any) {
   const theme = useTheme();
 
   const mediaUp = useMediaQuery(theme.breakpoints.up(key));
 
   const mediaDown = useMediaQuery(theme.breakpoints.down(key));
 
-  const mediaBetween = useMediaQuery(theme.breakpoints.between(start, end));
+  // const mediaBetween = useMediaQuery(theme.breakpoints.between(start, end));
 
   const mediaOnly = useMediaQuery(theme.breakpoints.only(key));
 
@@ -23,9 +24,9 @@ export default function useResponsive(query, key, start, end) {
     return mediaDown;
   }
 
-  if (query === 'between') {
-    return mediaBetween;
-  }
+  // if (query === 'between') {
+  //   return mediaBetween;
+  // }
 
   if (query === 'only') {
     return mediaOnly;

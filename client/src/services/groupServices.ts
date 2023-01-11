@@ -1,10 +1,10 @@
 import * as api from '../api/index'
 
-export const getUserGroupsService = async (data, setAlert, setAlertMessage) =>{
+export const getUserGroupsService = async (data: any, setAlert = (showAlert: boolean) => {}, setAlertMessage = (msg: string) => {}) =>{
     try{
         const userGroups = await api.getUserGroups(data)
         return userGroups
-    }catch(err){
+    }catch(err: any){
         setAlert(true)
         err.response.status === 400 || err.response.status === 401
         ? setAlertMessage(err.response.data.message) : setAlertMessage("Oops! Something went worng")
@@ -12,11 +12,11 @@ export const getUserGroupsService = async (data, setAlert, setAlertMessage) =>{
     }
 }
 
-export const createGroupService = async (data, setAlert, setAlertMessage) => {
+export const createGroupService = async (data: any, setAlert: any, setAlertMessage: any) => {
     try{
         const create_response = await api.createGroup(data)
         return create_response
-    }catch(err){
+    }catch(err: any){
         setAlert(true)
         err.response.status === 400 || err.response.status === 401
         ? setAlertMessage(err.response.data.message) : setAlertMessage("Oops! Something went worng")
@@ -25,11 +25,11 @@ export const createGroupService = async (data, setAlert, setAlertMessage) => {
 }
 
 
-export const editGroupService = async (data, setAlert, setAlertMessage) => {
+export const editGroupService = async (data: any, setAlert: any, setAlertMessage: any) => {
     try{
         const edit_response = await api.editGroup(data)
         return edit_response
-    }catch(err){
+    }catch(err: any){
         setAlert(true)
         err.response.status === 400 || err.response.status === 401
         ? setAlertMessage(err.response.data.message) : setAlertMessage("Oops! Something went worng")
@@ -37,11 +37,11 @@ export const editGroupService = async (data, setAlert, setAlertMessage) => {
     }
 }
 
-export const getGroupDetailsService = async(data, setAlert, setAlertMessage) =>{
+export const getGroupDetailsService = async(data: any, setAlert: any, setAlertMessage: any) =>{
     try{
         const group_details = await api.getGroupDetails(data)
         return group_details
-    }catch(err){
+    }catch(err: any){
         setAlert(true)
         err.response.status === 400 || err.response.status === 401
         ? setAlertMessage(err.response.data.message) : setAlertMessage("Oops! Something went worng")
@@ -49,11 +49,11 @@ export const getGroupDetailsService = async(data, setAlert, setAlertMessage) =>{
     }
 }
 
-export const getGroupExpenseService = async(data, setAlert, setAlertMessage) => {
+export const getGroupExpenseService = async(data: any, setAlert: any, setAlertMessage: any) => {
     try{
         const expense_details = await api.getGroupExpense(data)
         return expense_details
-    }catch(err){
+    }catch(err: any){
         setAlert(true)
         err.response.status === 400 || err.response.status === 401
         ? setAlertMessage(err.response.data.message) : setAlertMessage("Oops! Something went worng")
@@ -61,11 +61,11 @@ export const getGroupExpenseService = async(data, setAlert, setAlertMessage) => 
     }
 }
 
-export const getGroupSettleService = async(data, setAlert, setAlertMessage) => {
+export const getGroupSettleService = async(data: any, setAlert: any, setAlertMessage: any) => {
     try{
         const settle_details = await api.getSettle(data)
         return settle_details
-    }catch(err){
+    }catch(err: any){
         setAlert(true)
         err.response.status === 400 || err.response.status === 401
         ? setAlertMessage(err.response.data.message) : setAlertMessage("Oops! Something went worng")
@@ -73,11 +73,11 @@ export const getGroupSettleService = async(data, setAlert, setAlertMessage) => {
     }
 }
 
-export const settlementService = async(data, setAlert, setAlertMessage) => {
+export const settlementService = async(data: any, setAlert: any, setAlertMessage: any) => {
     try{
         const settle_details = await api.makeSettle(data)
         return settle_details
-    }catch(err){
+    }catch(err: any){
         setAlert(true)
         err.response.status === 400 || err.response.status === 401
         ? setAlertMessage(err.response.data.message) : setAlertMessage("Oops! Something went worng")

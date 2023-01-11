@@ -2,7 +2,7 @@ import { alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
-function createGradient(color1, color2) {
+function createGradient(color1: any, color2: any) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
 }
 
