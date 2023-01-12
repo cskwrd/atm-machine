@@ -5,7 +5,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import {  Stack,  TextField, IconButton, InputAdornment,  Snackbar, Alert } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // component
-import Iconify from '../Iconify';
+import { Iconify } from '../Iconify';
 import { register } from '../../services/auth';
 
 import useResponsive from '../../theme/hooks/useResponsive';

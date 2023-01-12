@@ -1,7 +1,7 @@
 import { Grid, Typography, Container, Card, Link, alpha, Fab } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUserGroupsService } from "../../services/groupServices";
-import Iconify from "../Iconify";
+import { Iconify } from "../Iconify";
 import Loading from "../loading";
 import { GroupCards } from "./groupCards";
 import { Link as RouterLink } from 'react-router-dom';

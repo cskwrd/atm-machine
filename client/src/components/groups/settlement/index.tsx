@@ -7,7 +7,7 @@ import useResponsive from '../../../theme/hooks/useResponsive';
 import { CurrencyType } from '../../../utils/helper';
 
 import AlertBanner from '../../AlertBanner';
-import Iconify from '../../Iconify';
+import { Iconify } from '../../Iconify';
 import Loading from '../../loading'
 import SettlementCard from './settlementCard';
 import UserBalanceChart from './userBalanceChart';

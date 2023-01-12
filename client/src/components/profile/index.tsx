@@ -10,7 +10,7 @@ import {
   Modal,
 } from "@mui/material";
 import gravatarUrl from "gravatar-url";
-import Iconify from "../Iconify";
+import { Iconify } from "../Iconify";
 import useResponsive from "../../theme/hooks/useResponsive";
 import UserDetails from "./userDetails";
 import { useState } from "react";

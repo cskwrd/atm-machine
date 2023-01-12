@@ -4,7 +4,7 @@ import { Card, CardContent, Typography, Box, AvatarGroup, Avatar, Stack, Grid } 
 import { convertToCurrency, currencyFind, categoryIcon, GroupCategories, CurrencyType } from '../../utils/helper';
 // utils
 // components
-import Iconify from '../Iconify';
+import { Iconify } from '../Iconify';
 import gravatarUrl from 'gravatar-url';
 import configData from '../../config.json'
 import { Theme } from '@mui/system';

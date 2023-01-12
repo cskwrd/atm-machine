@@ -1,8 +1,8 @@
 import { Grid, Box, styled, Typography, Popover, MenuList, MenuItem, ListItemIcon, ListItemText, Modal, Stack, Button } from '@mui/material'
-import React, { useState } from 'react'
+import React, { MouseEventHandler, useState } from 'react'
 import useResponsive from '../../theme/hooks/useResponsive';
 import { convertToCurrency, currencyFind, CurrencyType, getMonthMMM, zeroPad } from '../../utils/helper';
-import Iconify from '../Iconify';
+import { Iconify } from '../Iconify';
 import { Link as RouterLink } from 'react-router-dom';
 import dataConfig from '../../config.json';
 import { deleteExpenseService } from '../../services/expenseServices';
@@ -32,10 +32,10 @@ interface IExpenseCardType { expenseId: any, expenseName: string, expenseAmount:
 
 export default function ExpenseCard({ expenseId, expenseName, expenseAmount, expensePerMember, expenseOwner, expenseDate, currencyType } : IExpenseCardType) {
     const mdUp = useResponsive('up', 'md');
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
     const [deleteConfirm, setDeleteConfirm] = useState(false)
 
-    const handleClick = (event: { currentTarget: React.SetStateAction<null>; }) => {
+    const handleClick: MouseEventHandler<HTMLDivElement> = (event) => {
         setAnchorEl(event.currentTarget);
     };
 

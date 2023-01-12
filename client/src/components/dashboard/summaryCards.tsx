@@ -1,6 +1,6 @@
 import { Box, Grid, Stack, styled, Typography } from '@mui/material'
 import { CurrencyType } from '../../utils/helper'
-import Iconify from '../Iconify'
+import { Iconify } from '../Iconify'
 import { CurrencyDisplay } from './CurrencyDisplay'
 
 interface ISummaryCardProps {

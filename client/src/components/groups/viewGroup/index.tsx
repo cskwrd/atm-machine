@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { getGroupDetailsService, getGroupExpenseService } from '../../../services/groupServices';
 import AlertBanner from '../../AlertBanner';
-import Iconify from '../../Iconify';
+import { Iconify } from '../../Iconify';
 import Loading from '../../loading';
 import useResponsive from '../../../theme/hooks/useResponsive';
 import { convertToCurrency, currencyFind, categoryIcon } from '../../../utils/helper';

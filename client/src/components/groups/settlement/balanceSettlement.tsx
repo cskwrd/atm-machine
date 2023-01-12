@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { settlementService } from "../../../services/groupServices";
 import AlertBanner from "../../AlertBanner";
-import Iconify from "../../Iconify";
+import { Iconify } from "../../Iconify";
 
 interface IBalanceSettlementProps {
   currencyType: CurrencyType;
