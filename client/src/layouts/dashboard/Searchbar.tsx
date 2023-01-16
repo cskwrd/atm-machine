@@ -4,6 +4,7 @@ import { styled, alpha } from '@mui/material/styles';
 import { Input, Slide, Button, IconButton, InputAdornment, ClickAwayListener } from '@mui/material';
 // component
 import { Iconify } from '../../components/Iconify';
+import palette from '../../theme/palette';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +23,8 @@ const SearchbarStyle = styled('div')(({ theme }) => ({
   backdropFilter: 'blur(6px)',
   WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
   padding: theme.spacing(0, 3),
-  boxShadow: theme.customShadows.z8,
+  //boxShadow: theme.customShadows.z8, // TODO : for this line to work, https://mui.com/material-ui/customization/theming/#custom-variables is needed
+  boxShadow: `0 8px 16px 0 ${alpha(palette.grey[500], 0.24)}`,
   backgroundColor: `${alpha(theme.palette.background.default, 0.72)}`,
   [theme.breakpoints.up('md')]: {
     height: APPBAR_DESKTOP,

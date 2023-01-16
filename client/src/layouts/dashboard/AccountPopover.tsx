@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { alpha } from '@mui/material/styles';
+import { alpha, Theme } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton } from '@mui/material';
 
 import gravatarUrl from 'gravatar-url';
@@ -42,7 +42,7 @@ export default function AccountPopover() {
 
   const [open, setOpen] = useState(null);
 
-  const handleOpen = (event) => {
+  const handleOpen = (event: any) => {
     setOpen(event.currentTarget);
   };
 
@@ -54,6 +54,18 @@ export default function AccountPopover() {
     logout()
   }
 
+  const openProps = {
+    '&:before': {
+      zIndex: 1,
+      content: "''",
+      width: '100%',
+      height: '100%',
+      borderRadius: '50%',
+      position: 'absolute',
+      bgcolor: (theme: Theme) => alpha(theme.palette.grey[900], 0.8),
+    },
+  };
+
   return (
     <>
       <IconButton
@@ -61,17 +73,7 @@ export default function AccountPopover() {
         onClick={handleOpen}
         sx={{
           p: 0,
-          ...(open && {
-            '&:before': {
-              zIndex: 1,
-              content: "''",
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              position: 'absolute',
-              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
-            },
-          }),
+          ...(open ? openProps : {}),
         }}
       >
         {user&&
