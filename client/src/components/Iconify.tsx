@@ -4,7 +4,6 @@ import React from 'react';
 
 interface IIconifyProps extends Omit<BoxProps, "icon"> {
   icon: IconifyIcon | string;
-  sx: any;
 };
 
 export const Iconify: React.FunctionComponent<IIconifyProps> = ({ icon, ...other }) => {
